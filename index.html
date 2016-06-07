@@ -1,0 +1,142 @@
+<html>
+
+<head>
+	<title>Wage Mobility Interactive</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.4.1/snap.svg-min.js"></script>
+	<!-- <link href="css/materialdesignicons.min.css" media="all" rel="stylesheet" type="text/css" /> -->
+
+	<style>
+		@import url(https://fonts.googleapis.com/css?family=Lato:400,700);
+		.subconstraint{max-width:1045px;}
+		.graph{max-width:1045px}
+		.hed{font-family:'Lato';font-size:22px;font-weight:700;}
+		.dek{font-family:'Lato';font-size:17px;margin-bottom:20px;}
+	</style>
+
+	<script>
+		// design for 1045 pixels, switch to a 'tall' format if fewer than 1045 pixels are available
+		if(window.outerWidth>900){
+			wide=1
+		} else{
+			wide=0
+		}
+
+	</script>
+
+</head>
+
+<body>
+	
+	<div class='subconstraint'>
+		<div class='hed'>Income mobility blah blah blah</div>
+		<div class='dek'>Directions for what you can do - select something from a dropdown or etc.</div>
+		<div class='styled-select'>
+			<span class='select_carat'>
+				<select name="select" onchange='demo_change()' id='demo_select'>
+					<option value=0>All</option> 
+					<option value=1 selected>Female</option>
+					<option value=2>Male</option>
+				</select>
+			</span>
+		</div>
+	</div>
+
+	<div class='subconstraint'>
+		<svg id="income_graph" viewbox='0,0,1045,700' ></svg>
+	</div>
+
+</body>
+
+<script defer>
+var data = {'All':{'pre':{1:[23.87,19.61,15.96,12.3,9.52,6.68,4.62,3.73,2.16,1.56],2:[17.35,17.86,16.5,13.52,10.55,8.43,6.06,4.53,2.86,2.34],3:[11.85,14.07,16.62,15.25,12.79,9.78,7.46,5.5,3.87,2.81],4:[8.61,10.71,13.03,15.49,14.25,12.09,9.99,7.29,5.21,3.33],5:[6.35,7.98,10.23,13.01,14.79,14.61,12.34,9.29,6.82,4.57],6:[5.13,5.8,7.67,9.71,12.63,14.88,15.32,13.32,9.71,5.84],7:[3.68,4.6,5.6,7.3,9.22,13.08,16.16,17.21,14.31,8.84],8:[2.71,3.26,4.18,5.04,6.46,9.67,14.89,19.74,20.47,13.58],9:[2.03,2.32,2.7,3.74,4.3,6.44,9.56,17.32,25.52,26.08],10:[1.68,1.99,2.02,2.39,2.97,3.57,4.89,8.12,18.42,53.95]},'post':{},'difference':{1:[9.46,8.37,5.28,-3.27,-16.38,-15.21,-21.11,-6.61,-7.45],2:[10.06,6.89,5.82,7,-3.07,-16.65,-17.92,-24.19,-12.25,-26.6],3:[9.54,6.83,2.52,7.07,0.49,-9.97,-12.88,-14.84,-12.2,-15.25],4:[10.43,5.77,9.93,7.5,6.69,-2.86,-18.36,-15.47,-18.75,-19.17],5:[7.7,1.22,3.59,6.28,11.04,2.46,-5.35,-9.49,-18.85,-20.44],6:[5.77,1.59,1.11,8.19,12.12,11.04,-1.77,-8.68,-16.26,-24.57],7:[15.85,7.37,10.66,6.2,11.6,11.8,8.65,-5.34,-19.48,-25.75],8:[23.42,10.29,1.91,5.26,7.29,7.76,6.03,7.34,-7.98,-23.92],9:[18.16,18.45,11.56,-0.22,5.06,-5.32,1.79,.5,8.46,-13.01],10:[2.89,-19.14,-15.7,-11.99,-15.22,-12.2,-12.85,-10.71,-7.1,8.58]}}}
+
+var mobile = Snap('#income_graph')
+var color_scale = ['#67c2a5','#fc8d62']
+
+// issue commands
+draw_base()
+draw_graph(data['All']['pre'])
+
+function draw_base(){
+	var arrow = mobile.path('M0,0 L0,4 L6,2 L0,0').attr({})
+	var arrow2 = mobile.path('M6,0 L6,4 L0,2 L6,0').attr({})
+	var amarker = arrow.marker(0,0,6,4,0,2).attr({});
+	var amarker2 = arrow2.marker(0,0,6,4,6,2).attr({});
+	var guideline = mobile.line(1000,140,1000,560).attr({'stroke-width':1,'stroke':'black','shape-rendering':'crispEdges','marker-end':amarker,'marker-start':amarker2})
+
+	var rich_end = mobile.text(1000,109,['Richer after','15 years']).attr({'font-family':'Lato','text-anchor':'middle'})
+	rich_end.selectAll("tspan:not(:first-child)").attr({x:rich_end.attr('x'),dy:15})
+	var poor_end = mobile.text(1000,585,['Poorer after','15 years']).attr({'font-family':'Lato','text-anchor':'middle'})
+	poor_end.selectAll("tspan:not(:first-child)").attr({x:poor_end.attr('x'),dy:15})
+}
+
+function draw_graph(matrix){
+	// 0 to 1000, 50 pixel gutters on each side, 5 pixel margins between
+	var bin_width=855/10
+	var midg=mobile.gradient("l(0,0,0,1)#67c2a5-#fc8d62")
+
+	for(var i=1;i<11;i++){
+		// i is is the starting percentile bucket
+		rect_top=0
+		for(var j=0;j<10;j++){
+			// j is the ending percentile bucket (starts at 0 because this is just an indexed array)
+			// draw all rectangles starting at bottom and working up
+			// then shift all rectangle up so that the i-1 rectangle is centered around 350
+			var size=size_rect(matrix[i][j])
+			if(j!=0){rect_top=rect_top-size-2}
+
+			// get appropriate fill
+			if(i==j+1){
+				var fill=midg
+			} else if(i<j+1){
+				var fill=color_scale[0]
+			} else{
+				var fill=color_scale[1]
+			}
+
+			var base_bin=mobile.rect(50+bin_width*(i-1)+5*(i-1),rect_top,bin_width,size).attr({fill:fill,'shape-rendering':'crispEdges',starting:i,ending:j+1,opacity:.8,'stroke-width':1,'stroke':'#555'})
+		}
+
+		// find x coord of the rect that has starting=i and ending=i
+		var base=mobile.select("rect[starting='"+i+"'][ending='"+i+"']")
+		var coords=base.getBBox()
+		var offset=350-(coords.y+coords.height/2)
+
+		mobile.selectAll("rect[starting='"+i+"']").forEach(function(step,i){
+			var steploc=step.getBBox().y
+			step.attr({y:steploc+offset})
+		})
+	}
+
+	for(var i=1;i<11;i++){
+		var midlines=mobile.line(50+bin_width*(i-1)+5*(i-1),349.5,50+bin_width*(i-1)+5*(i-1)+bin_width,349.5).attr({'shape-rendering':'crispEdges','stroke-width':1,'stroke':'#555',opacity:.8})
+	}
+}
+
+function size_rect(value){
+	// value to size a rectangle vertically based on the value it represents
+	var max=60
+	var min=0
+
+	// max height is the largest a bin can be (vertically) based on data value
+	// since the max value is 60, and there are 300 pixels of vertical real-
+	// estate available, the largest bin can be 60% of those 300 pixels. Scale
+	// everything else accordingly.
+	var max_height=300*.6
+
+	return max_height*value/(max-min)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
