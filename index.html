@@ -48,31 +48,33 @@
 </body>
 
 <script defer>
-var data = {'All':{'pre':{1:[23.87,19.61,15.96,12.3,9.52,6.68,4.62,3.73,2.16,1.56],2:[17.35,17.86,16.5,13.52,10.55,8.43,6.06,4.53,2.86,2.34],3:[11.85,14.07,16.62,15.25,12.79,9.78,7.46,5.5,3.87,2.81],4:[8.61,10.71,13.03,15.49,14.25,12.09,9.99,7.29,5.21,3.33],5:[6.35,7.98,10.23,13.01,14.79,14.61,12.34,9.29,6.82,4.57],6:[5.13,5.8,7.67,9.71,12.63,14.88,15.32,13.32,9.71,5.84],7:[3.68,4.6,5.6,7.3,9.22,13.08,16.16,17.21,14.31,8.84],8:[2.71,3.26,4.18,5.04,6.46,9.67,14.89,19.74,20.47,13.58],9:[2.03,2.32,2.7,3.74,4.3,6.44,9.56,17.32,25.52,26.08],10:[1.68,1.99,2.02,2.39,2.97,3.57,4.89,8.12,18.42,53.95]},'post':{},'difference':{1:[9.46,8.37,5.28,-3.27,-16.38,-15.21,-21.11,-6.61,-7.45],2:[10.06,6.89,5.82,7,-3.07,-16.65,-17.92,-24.19,-12.25,-26.6],3:[9.54,6.83,2.52,7.07,0.49,-9.97,-12.88,-14.84,-12.2,-15.25],4:[10.43,5.77,9.93,7.5,6.69,-2.86,-18.36,-15.47,-18.75,-19.17],5:[7.7,1.22,3.59,6.28,11.04,2.46,-5.35,-9.49,-18.85,-20.44],6:[5.77,1.59,1.11,8.19,12.12,11.04,-1.77,-8.68,-16.26,-24.57],7:[15.85,7.37,10.66,6.2,11.6,11.8,8.65,-5.34,-19.48,-25.75],8:[23.42,10.29,1.91,5.26,7.29,7.76,6.03,7.34,-7.98,-23.92],9:[18.16,18.45,11.56,-0.22,5.06,-5.32,1.79,.5,8.46,-13.01],10:[2.89,-19.14,-15.7,-11.99,-15.22,-12.2,-12.85,-10.71,-7.1,8.58]}}}
+var data = {'All':{'pre':{1:[23.87,19.61,15.96,12.3,9.52,6.68,4.62,3.73,2.16,1.56],2:[17.35,17.86,16.5,13.52,10.55,8.43,6.06,4.53,2.86,2.34],3:[11.85,14.07,16.62,15.25,12.79,9.78,7.46,5.5,3.87,2.81],4:[8.61,10.71,13.03,15.49,14.25,12.09,9.99,7.29,5.21,3.33],5:[6.35,7.98,10.23,13.01,14.79,14.61,12.34,9.29,6.82,4.57],6:[5.13,5.8,7.67,9.71,12.63,14.88,15.32,13.32,9.71,5.84],7:[3.68,4.6,5.6,7.3,9.22,13.08,16.16,17.21,14.31,8.84],8:[2.71,3.26,4.18,5.04,6.46,9.67,14.89,19.74,20.47,13.58],9:[2.03,2.32,2.7,3.74,4.3,6.44,9.56,17.32,25.52,26.08],10:[1.68,1.99,2.02,2.39,2.97,3.57,4.89,8.12,18.42,53.95]},'post':{1:[26.13,21.25,16.8,11.89,7.96,5.66,3.9,2.94,2.01,1.45],2:[19.1,19.09,17.46,14.47,10.22,7.03,4.97,3.43,2.51,1.72],3:[12.98,15.03,17.03,16.33,12.86,8.8,6.5,4.68,3.4,2.38],4:[9.51,11.33,14.32,16.65,15.2,11.75,8.16,6.16,4.23,2.69],5:[6.84,8.08,10.59,13.83,16.42,14.97,11.68,8.41,5.53,3.64],6:[5.43,5.9,7.75,10.5,14.16,16.52,15.05,12.16,8.13,4.4],7:[4.26,4.94,6.2,7.75,10.29,14.63,17.56,16.29,11.52,6.56],8:[3.34,3.6,4.26,5.3,6.93,10.42,15.79,21.19,18.83,10.33],9:[2.4,2.74,3.01,3.74,4.52,6.1,9.73,17.41,27.68,22.68],10:[1.73,1.61,1.7,2.1,2.52,3.14,4.26,7.25,17.11,58.58]},'difference':{1:[9.46,8.37,5.28,-3.27,-16.38,-15.21,-21.11,-6.61,-7.45],2:[10.06,6.89,5.82,7,-3.07,-16.65,-17.92,-24.19,-12.25,-26.6],3:[9.54,6.83,2.52,7.07,0.49,-9.97,-12.88,-14.84,-12.2,-15.25],4:[10.43,5.77,9.93,7.5,6.69,-2.86,-18.36,-15.47,-18.75,-19.17],5:[7.7,1.22,3.59,6.28,11.04,2.46,-5.35,-9.49,-18.85,-20.44],6:[5.77,1.59,1.11,8.19,12.12,11.04,-1.77,-8.68,-16.26,-24.57],7:[15.85,7.37,10.66,6.2,11.6,11.8,8.65,-5.34,-19.48,-25.75],8:[23.42,10.29,1.91,5.26,7.29,7.76,6.03,7.34,-7.98,-23.92],9:[18.16,18.45,11.56,-0.22,5.06,-5.32,1.79,.5,8.46,-13.01],10:[2.89,-19.14,-15.7,-11.99,-15.22,-12.2,-12.85,-10.71,-7.1,8.58]}}}
 
 var mobile = Snap('#income_graph')
 var color_scale = ['#67c2a5','#fc8d62']
 
 // issue commands
 draw_base()
-draw_graph(data['All']['pre'])
+draw_graph(data['All']['post'])
 
 function draw_base(){
 	var arrow = mobile.path('M0,0 L0,4 L6,2 L0,0').attr({})
 	var arrow2 = mobile.path('M6,0 L6,4 L0,2 L6,0').attr({})
 	var amarker = arrow.marker(0,0,6,4,0,2).attr({});
 	var amarker2 = arrow2.marker(0,0,6,4,6,2).attr({});
-	var guideline = mobile.line(1000,140,1000,560).attr({'stroke-width':1,'stroke':'black','shape-rendering':'crispEdges','marker-end':amarker,'marker-start':amarker2})
+	var guideline = mobile.line(1000,100,1000,600).attr({'stroke-width':1,'stroke':'black','shape-rendering':'crispEdges','marker-end':amarker,'marker-start':amarker2})
 
-	var rich_end = mobile.text(1000,109,['Richer after','15 years']).attr({'font-family':'Lato','text-anchor':'middle'})
+	var rich_end = mobile.text(1000,69,['Richer after','15 years']).attr({'font-family':'Lato','text-anchor':'middle'})
 	rich_end.selectAll("tspan:not(:first-child)").attr({x:rich_end.attr('x'),dy:15})
-	var poor_end = mobile.text(1000,585,['Poorer after','15 years']).attr({'font-family':'Lato','text-anchor':'middle'})
+	var poor_end = mobile.text(1000,625,['Poorer after','15 years']).attr({'font-family':'Lato','text-anchor':'middle'})
 	poor_end.selectAll("tspan:not(:first-child)").attr({x:poor_end.attr('x'),dy:15})
 }
 
 function draw_graph(matrix){
-	// 0 to 1000, 50 pixel gutters on each side, 5 pixel margins between
-	var bin_width=855/10
+	// 0 to 1000, 50 pixel gutter on left side, 5 pixel margins between
+	var gap=15
+	var total=1000-50-10*gap
+	var bin_width=total/10
 	var midg=mobile.gradient("l(0,0,0,1)#67c2a5-#fc8d62")
 
 	for(var i=1;i<11;i++){
@@ -83,18 +85,21 @@ function draw_graph(matrix){
 			// draw all rectangles starting at bottom and working up
 			// then shift all rectangle up so that the i-1 rectangle is centered around 350
 			var size=size_rect(matrix[i][j])
-			if(j!=0){rect_top=rect_top-size-2}
+			if(j!=0){rect_top=rect_top-size-1}
 
 			// get appropriate fill
 			if(i==j+1){
 				var fill=midg
+				var opacity=1
 			} else if(i<j+1){
 				var fill=color_scale[0]
-			} else{s
+				var opacity=.7
+			} else{
 				var fill=color_scale[1]
+				var opacity=.7
 			}
 
-			var base_bin=mobile.rect(50+bin_width*(i-1)+5*(i-1),rect_top,bin_width,size).attr({fill:fill,'shape-rendering':'crispEdges',starting:i,ending:j+1,opacity:.8,'stroke-width':1,'stroke':'#555'})
+			var base_bin=mobile.rect(50+bin_width*(i-1)+gap*(i-1),rect_top,bin_width,size).attr({fill:fill,'shape-rendering':'crispEdges',starting:i,ending:j+1,'stroke-width':0,'stroke':'#888',opacity:opacity})
 		}
 
 		// find x coord of the rect that has starting=i and ending=i
@@ -108,9 +113,9 @@ function draw_graph(matrix){
 		})
 	}
 
-	for(var i=1;i<11;i++){
-		var midlines=mobile.line(50+bin_width*(i-1)+5*(i-1),349.5,50+bin_width*(i-1)+5*(i-1)+bin_width,349.5).attr({'shape-rendering':'crispEdges','stroke-width':1,'stroke':'#555',opacity:.8})
-	}
+	// for(var i=1;i<11;i++){
+	// 	var midlines=mobile.line(50+bin_width*(i-1)+5*(i-1),349.5,50+bin_width*(i-1)+5*(i-1)+bin_width,349.5).attr({'shape-rendering':'crispEdges','stroke-width':1,'stroke':'#555',opacity:.8})
+	// }
 }
 
 function size_rect(value){
