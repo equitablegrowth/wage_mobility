@@ -52,28 +52,42 @@ var data = {'All':{'pre':{1:[23.87,19.61,15.96,12.3,9.52,6.68,4.62,3.73,2.16,1.5
 
 var mobile = Snap('#income_graph')
 var color_scale = ['#67c2a5','#fc8d62']
+var width=950
+var left_margin=0
+var type='pre'
 
 // issue commands
 draw_base()
-draw_graph(data['All']['post'])
+draw_graph(data['All'][type])
 
 function draw_base(){
-	var arrow = mobile.path('M0,0 L0,4 L6,2 L0,0').attr({})
-	var arrow2 = mobile.path('M6,0 L6,4 L0,2 L6,0').attr({})
+	var arrow = mobile.path('M0,0 L0,4 L6,2 L0,0').attr({fill:'#ccc'})
+	var arrow2 = mobile.path('M6,0 L6,4 L0,2 L6,0').attr({fill:'#ccc'})
 	var amarker = arrow.marker(0,0,6,4,0,2).attr({});
 	var amarker2 = arrow2.marker(0,0,6,4,6,2).attr({});
-	var guideline = mobile.line(1000,100,1000,600).attr({'stroke-width':1,'stroke':'black','shape-rendering':'crispEdges','marker-end':amarker,'marker-start':amarker2})
+	var guideline = mobile.line(width,100,width,600).attr({'stroke-width':1,'stroke':'#ccc','shape-rendering':'crispEdges','marker-end':amarker,'marker-start':amarker2})
 
-	var rich_end = mobile.text(1000,69,['Richer after','15 years']).attr({'font-family':'Lato','text-anchor':'middle'})
+	var rich_end = mobile.text(width,69,['Richer after','15 years']).attr({'font-family':'Lato','text-anchor':'middle'})
 	rich_end.selectAll("tspan:not(:first-child)").attr({x:rich_end.attr('x'),dy:15})
-	var poor_end = mobile.text(1000,625,['Poorer after','15 years']).attr({'font-family':'Lato','text-anchor':'middle'})
+	var poor_end = mobile.text(width,625,['Poorer after','15 years']).attr({'font-family':'Lato','text-anchor':'middle'})
 	poor_end.selectAll("tspan:not(:first-child)").attr({x:poor_end.attr('x'),dy:15})
+	var stay_same = mobile.text(width+4,348,['No change','in income']).attr({'font-family':'Lato','text-anchor':'start'})
+	stay_same.selectAll("tspan:not(:first-child)").attr({x:parseInt(stay_same.attr('x')),dy:15})
+
+	// grid lines
+	var percents=[10,20,30,40,50,60,70]
+	for (var i=0;i<percents.length;i++){
+		mobile.line(left_margin,335-size_rect(percents[i]),left_margin+width,335-size_rect(percents[i])).attr({stroke:'#eee','stroke-width':1,'shape-rendering':'crispEdges'})
+		mobile.line(left_margin,365+size_rect(percents[i]),left_margin+width,365+size_rect(percents[i])).attr({stroke:'#eee','stroke-width':1,'shape-rendering':'crispEdges'})
+		mobile.text(left_margin+width+4,4+335-size_rect(percents[i]),percents[i]).attr({'font-family':'Lato',fill:'#aaa','font-size':13})
+		mobile.text(left_margin+width+4,4+365+size_rect(percents[i]),percents[i]).attr({'font-family':'Lato',fill:'#aaa','font-size':13})
+	}
 }
 
 function draw_graph(matrix){
-	// 0 to 1000, 50 pixel gutter on left side, 5 pixel margins between
-	var gap=15
-	var total=1000-50-10*gap
+	// 0 to 1000, 10 pixel gutter on left side, 1 pixel margins between
+	var gap=1
+	var total=width-left_margin-10*gap
 	var bin_width=total/10
 	var midg=mobile.gradient("l(0,0,0,1)#67c2a5-#fc8d62")
 
@@ -85,12 +99,12 @@ function draw_graph(matrix){
 			// draw all rectangles starting at bottom and working up
 			// then shift all rectangle up so that the i-1 rectangle is centered around 350
 			var size=size_rect(matrix[i][j])
-			if(j!=0){rect_top=rect_top-size-1}
 
 			// get appropriate fill
 			if(i==j+1){
-				var fill=midg
+				var fill=choose_gray_scale(matrix[i][j])
 				var opacity=1
+				size=30
 			} else if(i<j+1){
 				var fill=color_scale[0]
 				var opacity=.7
@@ -98,8 +112,12 @@ function draw_graph(matrix){
 				var fill=color_scale[1]
 				var opacity=.7
 			}
+			if(j!=0){rect_top=rect_top-size-1}
 
-			var base_bin=mobile.rect(50+bin_width*(i-1)+gap*(i-1),rect_top,bin_width,size).attr({fill:fill,'shape-rendering':'crispEdges',starting:i,ending:j+1,'stroke-width':0,'stroke':'#888',opacity:opacity})
+			var base_bin=mobile.rect(left_margin+bin_width*(i-1)+gap*(i-1),rect_top,bin_width,size).attr({basex:left_margin+bin_width*(i-1)+gap*(i-1),fill:fill,'shape-rendering':'crispEdges',starting:i,ending:j+1,'stroke-width':0,'stroke':'#888',opacity:opacity})
+			if(i==j+1){
+				var text_overlay=mobile.text(bin_width/2+left_margin+bin_width*(i-1)+gap*(i-1),rect_top+37,matrix[i][j].toFixed()+'%').attr({fill:'white',starting:i,ending:j+1,'font-family':'Lato','text-anchor':'middle'})
+			}
 		}
 
 		// find x coord of the rect that has starting=i and ending=i
@@ -107,15 +125,22 @@ function draw_graph(matrix){
 		var coords=base.getBBox()
 		var offset=350-(coords.y+coords.height/2)
 
-		mobile.selectAll("rect[starting='"+i+"']").forEach(function(step,i){
+		mobile.selectAll("[starting='"+i+"']").forEach(function(step,i){
 			var steploc=step.getBBox().y
-			step.attr({y:steploc+offset})
+			step.attr({y:steploc+offset,basey:steploc+offset})
 		})
-	}
 
-	// for(var i=1;i<11;i++){
-	// 	var midlines=mobile.line(50+bin_width*(i-1)+5*(i-1),349.5,50+bin_width*(i-1)+5*(i-1)+bin_width,349.5).attr({'shape-rendering':'crispEdges','stroke-width':1,'stroke':'#555',opacity:.8})
-	// }
+		// transparent overlay for hover effects
+		var overlay=mobile.rect(left_margin+bin_width*(i-1)+gap*(i-1),50,bin_width,650).attr({opacity:0,starting:i})
+		overlay.hover(expand_block,reduce_block)
+	}
+}
+
+function choose_gray_scale(value){
+	if(value<19){return '#999'}
+	if(value>=19 && value<22){return '#777'}
+	if(value>=22 && value<30){return '#555'}
+	if(value>=30){return '#222'}
 }
 
 function size_rect(value){
@@ -129,7 +154,68 @@ function size_rect(value){
 	// everything else accordingly.
 	var max_height=300*.6
 
-	return max_height*value/(max-min)
+	return (max_height*value/(max-min))-1
+}
+
+function expand_block(ev){
+	var temp=Snap(ev.target)
+	var bin=temp.attr('starting')
+
+	// manipulate blocks
+	mobile.selectAll("[starting='"+bin+"'][ending]").forEach(function(step,i){
+		if(parseInt(step.attr('starting'))!=parseInt(step.attr('ending'))){
+			step.animate({opacity:1},400)
+			if(parseInt(step.attr('starting'))<parseInt(step.attr('ending'))){
+				var step_pos=step.attr('ending')-step.attr('starting')
+				step.animate({y:parseFloat(step.attr('basey'))-5*step_pos},200,mina.easeinout,function(){step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout)})
+			} else if(parseInt(step.attr('starting'))>parseInt(step.attr('ending'))){
+				var step_pos=step.attr('starting')-step.attr('ending')
+				step.animate({y:parseFloat(step.attr('basey'))+5*step_pos},200,mina.easeinout,function(){step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout)})
+			}
+		}
+	})
+
+	// write and fade-in text
+	// var percentchance=0
+	// for(var i=bin-1;i<10;i++){
+	// 	percentchance=percentchance+data['All'][type][bin][i]
+	// }
+	// var bintext=mobile.text(800,50,['People ','in ','the ','top ',(bin*10+'%'),' ','of ','earnings ','have ','a ',percentchance.toFixed()+'%']).attr({'font-size':22,'font-family':'Lato','text-anchor':'end',texttype:'temp',starting:bin,opacity:1})
+	// var bintext2=mobile.text(800,80,['chance ','of ','being ','wealthier ','15 ','years ','later.']).attr({'font-size':22,'font-family':'Lato','text-anchor':'end',texttype:'temp',starting:bin,opacity:1})
+	// bintext.selectAll("tspan").attr({opacity:0})
+	// bintext2.selectAll("tspan").attr({opacity:0})
+
+	// setTimeout(function(){
+	// 	bintext.selectAll("tspan").forEach(function(word,i){
+	// 		setTimeout(function(){
+	// 			word.animate({opacity:1},700)
+	// 		},30*i)
+	// 	})
+		
+	// 	bintext2.selectAll("tspan").forEach(function(word,i){
+	// 		setTimeout(function(){
+	// 			word.animate({opacity:1},700)
+	// 		},30*(i+5))
+	// 	})	
+	// },300)
+}
+
+function reduce_block(ev){
+	var temp=Snap(ev.target)
+	var bin=temp.attr('starting')
+	mobile.selectAll("[starting='"+bin+"'][ending]").forEach(function(step,i){
+		if(parseInt(step.attr('starting'))!=parseInt(step.attr('ending'))){
+			step.stop()
+			step.animate({opacity:.7},300)
+			if(parseInt(step.attr('starting'))<parseInt(step.attr('ending'))){
+				step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout)
+			} else if(parseInt(step.attr('starting'))>parseInt(step.attr('ending'))){
+				step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout)
+			}
+		}
+	})
+
+	mobile.selectAll("[starting='"+bin+"'][texttype]").animate({opacity:0},300)
 }
 
 
