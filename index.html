@@ -222,8 +222,15 @@ function expand_block(ev){
 		
 		bintext2.selectAll("tspan").forEach(function(word,i){
 			setTimeout(function(){
-				if(bin!=10 && i==4){word.attr({fill:color_scale[0],'font-weight':700})}
-				if(bin==10 && i==6){word.attr({fill:color_scale[1],'font-weight':700})}
+				if(bin!=10 && i==4){
+					word.attr({fill:'white','font-weight':700})
+					var temprect=mobile.rect(490,57,145,30).attr({fill:color_scale[0],starting:bin,type:'temprect',opacity:0})
+					temprect.animate({opacity:1},700)
+					mobile.append(mobile.selectAll('text'))
+				}
+				if(bin==10 && i==6){
+					word.attr({fill:'white','font-weight':700})
+				}
 				word.animate({opacity:1},700)
 			},30*(i+5))
 		})
@@ -279,7 +286,15 @@ function reduce_block(ev){
 		}
 	})
 
+	mobile.selectAll("[starting='"+bin+"'][texttype]").forEach(function(word,i){
+		word.stop()
+	})
 	mobile.selectAll("[starting='"+bin+"'][texttype]").animate({opacity:0},100)
+	mobile.selectAll("[starting='"+bin+"'][type='temprect']").forEach(function(rect,i){
+		// rect.stop()
+		rect.animate({opacity:0},100,function(){rect.remove()})
+	})
+	
 }
 
 
