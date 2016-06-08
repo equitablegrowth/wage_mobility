@@ -29,7 +29,7 @@
 	
 	<div class='subconstraint'>
 		<div class='hed'>Income mobility blah blah blah</div>
-		<div class='dek'>Directions for what you can do - select something from a dropdown or etc.</div>
+		<div class='dek'>Each block represents a 1 </div>
 		<div class='styled-select'>
 			<span class='select_carat'>
 				<select name="select" onchange='demo_change()' id='demo_select'>
@@ -65,9 +65,8 @@ function draw_base(){
 	var arrow2 = mobile.path('M6,0 L6,4 L0,2 L6,0').attr({fill:'#ccc'})
 	var amarker = arrow.marker(0,0,6,4,0,2).attr({});
 	var amarker2 = arrow2.marker(0,0,6,4,6,2).attr({});
-	var guideline = mobile.line(width,100,width,600).attr({'stroke-width':1,'stroke':'#ccc','shape-rendering':'crispEdges','marker-end':amarker,'marker-start':amarker2})
 
-	var rich_end = mobile.text(width,69,['Richer after','15 years']).attr({'font-family':'Lato','text-anchor':'middle'})
+	var rich_end = mobile.text(width-1,69,['Richer after','15 years']).attr({'font-family':'Lato','text-anchor':'middle'})
 	rich_end.selectAll("tspan:not(:first-child)").attr({x:rich_end.attr('x'),dy:15})
 	var poor_end = mobile.text(width,625,['Poorer after','15 years']).attr({'font-family':'Lato','text-anchor':'middle'})
 	poor_end.selectAll("tspan:not(:first-child)").attr({x:poor_end.attr('x'),dy:15})
@@ -79,8 +78,28 @@ function draw_base(){
 	for (var i=0;i<percents.length;i++){
 		mobile.line(left_margin,335-size_rect(percents[i]),left_margin+width,335-size_rect(percents[i])).attr({stroke:'#eee','stroke-width':1,'shape-rendering':'crispEdges'})
 		mobile.line(left_margin,365+size_rect(percents[i]),left_margin+width,365+size_rect(percents[i])).attr({stroke:'#eee','stroke-width':1,'shape-rendering':'crispEdges'})
-		mobile.text(left_margin+width+4,4+335-size_rect(percents[i]),percents[i]).attr({'font-family':'Lato',fill:'#aaa','font-size':13})
-		mobile.text(left_margin+width+4,4+365+size_rect(percents[i]),percents[i]).attr({'font-family':'Lato',fill:'#aaa','font-size':13})
+		mobile.text(left_margin+width+4,4+335-size_rect(percents[i]),percents[i]+'%').attr({'font-family':'Lato',fill:'#aaa','font-size':13})
+		mobile.text(left_margin+width+4,4+365+size_rect(percents[i]),percents[i]+'%').attr({'font-family':'Lato',fill:'#aaa','font-size':13})
+	}
+
+	var guideline = mobile.line(width-1,100,width-1,600).attr({'stroke-width':1,'stroke':'#ccc','shape-rendering':'crispEdges','marker-end':amarker,'marker-start':amarker2})
+}
+
+function switch_graph(newtype){
+	type=newtype
+	var matrix=data['All'][type]
+	for(var i=1;i<11;i++){
+		for(var j=0;j<10;j++){
+			if(i!=j+1){
+				var temp=mobile.select("rect[starting='"+i+"'][ending='"+(j+1)+"']")
+				var value=matrix[i][j]
+				temp.animate({height:size_rect(value)},800)
+			} else {
+				var value=matrix[i][j]
+				var temp=mobile.select("rect[starting='"+i+"'][ending='"+(j+1)+"']")
+				var temptext=mobile.select("text[starting='"+i+"'][ending='"+(j+1)+"']").attr({text:value.toFixed()+'%'})
+			}
+		}
 	}
 }
 
@@ -176,28 +195,73 @@ function expand_block(ev){
 	})
 
 	// write and fade-in text
-	// var percentchance=0
-	// for(var i=bin-1;i<10;i++){
-	// 	percentchance=percentchance+data['All'][type][bin][i]
-	// }
-	// var bintext=mobile.text(800,50,['People ','in ','the ','top ',(bin*10+'%'),' ','of ','earnings ','have ','a ',percentchance.toFixed()+'%']).attr({'font-size':22,'font-family':'Lato','text-anchor':'end',texttype:'temp',starting:bin,opacity:1})
-	// var bintext2=mobile.text(800,80,['chance ','of ','being ','wealthier ','15 ','years ','later.']).attr({'font-size':22,'font-family':'Lato','text-anchor':'end',texttype:'temp',starting:bin,opacity:1})
-	// bintext.selectAll("tspan").attr({opacity:0})
-	// bintext2.selectAll("tspan").attr({opacity:0})
+	// toptext
+	var percentchance=0
+	for(var i=bin;i<10;i++){
+		percentchance=percentchance+data['All'][type][bin][i]
+	}
 
-	// setTimeout(function(){
-	// 	bintext.selectAll("tspan").forEach(function(word,i){
-	// 		setTimeout(function(){
-	// 			word.animate({opacity:1},700)
-	// 		},30*i)
-	// 	})
+	if(bin!=10){
+		var bintext=mobile.text(850,50,['People ','in ','the ',((bin-1)*10+'-'),(bin*10+'%'),' percentile ','of ','earnings ','have ','a ',percentchance.toFixed()+'% ','chance ']).attr({'font-size':22,'font-family':'Lato','text-anchor':'end',texttype:'temp',starting:bin,opacity:1})
+		var bintext2=mobile.text(850,80,['of ','climbing ','into ','a ','higher income ','bracket ','15 ','years ','later.']).attr({'font-size':22,'font-family':'Lato','text-anchor':'end',texttype:'temp',starting:bin,opacity:1})
+		bintext.selectAll("tspan").attr({opacity:0})
+		bintext2.selectAll("tspan").attr({opacity:0})
+	} else {
+		var bintext=mobile.text(850,50,['People ','in ','the ','top 10% ','of ','the ','income']).attr({'font-size':22,'font-family':'Lato','text-anchor':'end',texttype:'temp',starting:bin,opacity:1})
+		var bintext2=mobile.text(850,80,['distribution ','have ','nowhere ','to ','go ','but ','down.']).attr({'font-size':22,'font-family':'Lato','text-anchor':'end',texttype:'temp',starting:bin,opacity:1})
+		bintext.selectAll("tspan").attr({opacity:0})
+		bintext2.selectAll("tspan").attr({opacity:0})
+	}
+
+	setTimeout(function(){
+		bintext.selectAll("tspan").forEach(function(word,i){
+			setTimeout(function(){
+				word.animate({opacity:1},700)
+			},30*i)
+		})
 		
-	// 	bintext2.selectAll("tspan").forEach(function(word,i){
-	// 		setTimeout(function(){
-	// 			word.animate({opacity:1},700)
-	// 		},30*(i+5))
-	// 	})	
-	// },300)
+		bintext2.selectAll("tspan").forEach(function(word,i){
+			setTimeout(function(){
+				if(bin!=10 && i==4){word.attr({fill:color_scale[0],'font-weight':700})}
+				if(bin==10 && i==6){word.attr({fill:color_scale[1],'font-weight':700})}
+				word.animate({opacity:1},700)
+			},30*(i+5))
+		})
+	},100)
+
+	// bottomtext
+	var percentchance=0
+	for(var i=bin-2;i>-1;i--){
+		percentchance=percentchance+data['All'][type][bin][i]
+	}
+
+	if(bin!=1){
+		var bintext3=mobile.text(50,620,['People ','in ','the ',((bin-1)*10+'-'),(bin*10+'%'),' percentile ','of ','earnings ','have ','a ',percentchance.toFixed()+'% ','chance ']).attr({'font-size':22,'font-family':'Lato','text-anchor':'start',texttype:'temp',starting:bin,opacity:1})
+		var bintext4=mobile.text(50,650,['of ','falling ','into ','a ','lower income ','bracket ','15 ','years ','later.']).attr({'font-size':22,'font-family':'Lato','text-anchor':'start',texttype:'temp',starting:bin,opacity:1})
+		bintext3.selectAll("tspan").attr({opacity:0})
+		bintext4.selectAll("tspan").attr({opacity:0})
+	} else {
+		var bintext3=mobile.text(50,620,['People ','in ','the ','bottom 10% ','of ','the ','income']).attr({'font-size':22,'font-family':'Lato','text-anchor':'start',texttype:'temp',starting:bin,opacity:1})
+		var bintext4=mobile.text(50,650,['distribution ','have ','nowhere ','to ','go ','but ','up.']).attr({'font-size':22,'font-family':'Lato','text-anchor':'start',texttype:'temp',starting:bin,opacity:1})
+		bintext3.selectAll("tspan").attr({opacity:0})
+		bintext4.selectAll("tspan").attr({opacity:0})
+	}
+
+	setTimeout(function(){
+		bintext3.selectAll("tspan").forEach(function(word,i){
+			setTimeout(function(){
+				word.animate({opacity:1},700)
+			},30*i)
+		})
+		
+		bintext4.selectAll("tspan").forEach(function(word,i){
+			setTimeout(function(){
+				if(bin!=1 && i==4){word.attr({fill:color_scale[1],'font-weight':700})}
+				if(bin==1 && i==6){word.attr({fill:color_scale[0],'font-weight':700})}
+				word.animate({opacity:1},700)
+			},30*(i+5))
+		})
+	},100)
 }
 
 function reduce_block(ev){
@@ -215,7 +279,7 @@ function reduce_block(ev){
 		}
 	})
 
-	mobile.selectAll("[starting='"+bin+"'][texttype]").animate({opacity:0},300)
+	mobile.selectAll("[starting='"+bin+"'][texttype]").animate({opacity:0},100)
 }
 
 
