@@ -60,6 +60,7 @@ var selectbin
 // issue commands
 draw_base()
 draw_graph(data['All'][type])
+mobile.mousemove(show_value)
 
 function draw_base(){
 	var arrow = mobile.path('M0,0 L0,4 L6,2 L0,0').attr({fill:'#ccc'})
@@ -83,7 +84,7 @@ function draw_base(){
 		mobile.text(left_margin+width+4,4+365+size_rect(percents[i]),percents[i]+'%').attr({'font-family':'Lato',fill:'#aaa','font-size':13})
 	}
 
-	var guideline = mobile.line(width-1,110,width-1,590).attr({'stroke-width':1,'stroke':'#ccc','shape-rendering':'crispEdges','marker-end':amarker,'marker-start':amarker2})
+	var guideline = mobile.line(width-1,110,width-1,590).attr({'guideline':'none','stroke-width':1,'stroke':'#ccc','shape-rendering':'crispEdges','marker-end':amarker,'marker-start':amarker2})
 }
 
 function switch_graph(newtype){
@@ -132,10 +133,9 @@ function draw_graph(matrix){
 				var fill=color_scale[1]
 				var opacity=.7
 			}
-			if(j!=0){rect_top=rect_top-size-1}
+			if(j!=0){rect_top=rect_top-size}
 
-			var base_bin=mobile.rect(left_margin+bin_width*(i-1)+gap*(i-1),rect_top,bin_width,size).attr({value:matrix[i][j],basex:left_margin+bin_width*(i-1)+gap*(i-1),fill:fill,'shape-rendering':'crispEdges',starting:i,ending:j+1,'stroke-width':0,'stroke':'#888',opacity:opacity})
-			base_bin.mousemove(show_value)
+			var base_bin=mobile.rect(left_margin+bin_width*(i-1)+gap*(i-1),rect_top,bin_width,size).attr({stroke:'white','stroke-width':1,value:matrix[i][j],basex:left_margin+bin_width*(i-1)+gap*(i-1),fill:fill,'shape-rendering':'crispEdges',starting:i,ending:j+1,opacity:opacity})
 			base_bin.hover(expand_block)
 			if(i==j+1){
 				var text_overlay=mobile.text(bin_width/2+left_margin+bin_width*(i-1)+gap*(i-1),rect_top+37,matrix[i][j].toFixed()+'%').attr({'pointer-events':'none',fill:'white',starting:i,ending:j+1,'font-family':'Lato','text-anchor':'middle'})
@@ -152,13 +152,17 @@ function draw_graph(matrix){
 			step.attr({y:steploc+offset,basey:steploc+offset})
 		})
 	}
+
+	mobile.append(mobile.selectAll('[guideline]'))
 }
 
 function show_value(ev){
 	var temp=Snap(ev.target)
 	mobile.selectAll('[hovervalue]').remove()
 
-	if(parseInt(temp.attr('starting'))!=parseInt(temp.attr('ending'))){
+	if(temp.attr('starting')==undefined){
+
+	} else if(parseInt(temp.attr('starting'))!=parseInt(temp.attr('ending'))){
 		if(parseInt(temp.attr('starting'))>parseInt(temp.attr('ending'))){
 			var color=color_scale[1]
 			var ttext='fall'
@@ -201,7 +205,7 @@ function size_rect(value){
 	// everything else accordingly.
 	var max_height=300*.6
 
-	return (max_height*value/(max-min))-1
+	return (max_height*value/(max-min))
 }
 
 function expand_block(ev){
@@ -254,7 +258,7 @@ function expand_block(ev){
 			bintext.selectAll("tspan").forEach(function(word,i){
 				setTimeout(function(){
 					word.animate({opacity:1},700)
-				},30*i)
+				},25*i)
 			})
 			
 			bintext2.selectAll("tspan").forEach(function(word,i){
@@ -270,7 +274,7 @@ function expand_block(ev){
 						mobile.append(mobile.selectAll('text[texttype]'))
 					}
 					word.animate({opacity:1},700)
-				},30*(i+8))
+				},25*(i+5))
 			})
 		},100)
 
@@ -318,7 +322,7 @@ function expand_block(ev){
 						mobile.append(mobile.selectAll('text[texttype]'))
 					}
 					word.animate({opacity:1},700)
-				},30*(i+8))
+				},30*(i+5))
 			})
 		},100)
 	}
