@@ -55,6 +55,7 @@ var color_scale = ['#67c2a5','#fc8d62']
 var width=950
 var left_margin=0
 var type='pre'
+var selectbin
 
 // issue commands
 draw_base()
@@ -133,7 +134,9 @@ function draw_graph(matrix){
 			}
 			if(j!=0){rect_top=rect_top-size-1}
 
-			var base_bin=mobile.rect(left_margin+bin_width*(i-1)+gap*(i-1),rect_top,bin_width,size).attr({basex:left_margin+bin_width*(i-1)+gap*(i-1),fill:fill,'shape-rendering':'crispEdges',starting:i,ending:j+1,'stroke-width':0,'stroke':'#888',opacity:opacity})
+			var base_bin=mobile.rect(left_margin+bin_width*(i-1)+gap*(i-1),rect_top,bin_width,size).attr({value:matrix[i][j],basex:left_margin+bin_width*(i-1)+gap*(i-1),fill:fill,'shape-rendering':'crispEdges',starting:i,ending:j+1,'stroke-width':0,'stroke':'#888',opacity:opacity})
+			base_bin.mousemove(show_value)
+			base_bin.hover(expand_block)
 			if(i==j+1){
 				var text_overlay=mobile.text(bin_width/2+left_margin+bin_width*(i-1)+gap*(i-1),rect_top+37,matrix[i][j].toFixed()+'%').attr({fill:'white',starting:i,ending:j+1,'font-family':'Lato','text-anchor':'middle'})
 			}
@@ -150,9 +153,20 @@ function draw_graph(matrix){
 		})
 
 		// transparent overlay for hover effects
-		var overlay=mobile.rect(left_margin+bin_width*(i-1)+gap*(i-1),50,bin_width,650).attr({opacity:0,starting:i})
-		overlay.hover(expand_block,reduce_block)
+		// var overlay=mobile.rect(left_margin+bin_width*(i-1)+gap*(i-1),50,bin_width,650).attr({fill:'none','pointer-events':'none',starting:i,overlay,cursor:'pointer'})
+		// overlay.hover(expand_block,reduce_block)
 	}
+}
+
+function show_value(ev){
+	var temp=Snap(ev.target)
+	var value=temp.attr('value')
+	mobile.selectAll('[hovervalue]').remove()
+
+	var x=ev.clientX-document.getElementById("income_graph").getBoundingClientRect()['left']
+	var y=ev.clientY-document.getElementById("income_graph").getBoundingClientRect()['top']
+
+	mobile.text(x,y,value).attr({'pointer-events':'none','hovervalue':'none','font-family':'Lato'})
 }
 
 function choose_gray_scale(value){
@@ -179,122 +193,151 @@ function size_rect(value){
 function expand_block(ev){
 	var temp=Snap(ev.target)
 	var bin=temp.attr('starting')
+	if(bin!=selectbin){
+		reduce_block(selectbin)
+		selectbin=bin
 
-	// manipulate blocks
-	mobile.selectAll("[starting='"+bin+"'][ending]").forEach(function(step,i){
-		if(parseInt(step.attr('starting'))!=parseInt(step.attr('ending'))){
-			step.animate({opacity:1},400)
-			if(parseInt(step.attr('starting'))<parseInt(step.attr('ending'))){
-				var step_pos=step.attr('ending')-step.attr('starting')
-				step.animate({y:parseFloat(step.attr('basey'))-5*step_pos},200,mina.easeinout,function(){step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout)})
-			} else if(parseInt(step.attr('starting'))>parseInt(step.attr('ending'))){
-				var step_pos=step.attr('starting')-step.attr('ending')
-				step.animate({y:parseFloat(step.attr('basey'))+5*step_pos},200,mina.easeinout,function(){step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout)})
+		// manipulate blocks
+		mobile.selectAll("[starting='"+bin+"'][ending]").forEach(function(step,i){
+			if(parseInt(step.attr('starting'))!=parseInt(step.attr('ending'))){
+				step.animate({opacity:1},400)
+				if(parseInt(step.attr('starting'))<parseInt(step.attr('ending'))){
+					var step_pos=step.attr('ending')-step.attr('starting')
+					step.animate({y:parseFloat(step.attr('basey'))-5*step_pos},200,mina.easeinout,function(){step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout)})
+				} else if(parseInt(step.attr('starting'))>parseInt(step.attr('ending'))){
+					var step_pos=step.attr('starting')-step.attr('ending')
+					step.animate({y:parseFloat(step.attr('basey'))+5*step_pos},200,mina.easeinout,function(){step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout)})
+				}
 			}
+		})
+
+		// write and fade-in text
+		// toptext
+		var percentchance=0
+		for(var i=bin;i<10;i++){
+			percentchance=percentchance+data['All'][type][bin][i]
 		}
-	})
 
-	// write and fade-in text
-	// toptext
-	var percentchance=0
-	for(var i=bin;i<10;i++){
-		percentchance=percentchance+data['All'][type][bin][i]
+		if(bin!=10){
+			var bintext=mobile.text(850,50,['People ','in ','the ',((bin-1)*10+'-'),(bin*10+'%'),' percentile ','of ','earnings ','have ','a ',percentchance.toFixed()+'% ','chance ']).attr({'font-size':22,'font-family':'Lato','text-anchor':'end',texttype:'temp',starting:bin,opacity:1})
+			var bintext2=mobile.text(850,80,['of ','climbing ','into ','a ','higher income ','bracket ','15 ','years ','later.']).attr({'font-size':22,'font-family':'Lato','text-anchor':'end',texttype:'temp',starting:bin,opacity:1})
+			bintext.selectAll("tspan").attr({opacity:0})
+			bintext2.selectAll("tspan").attr({opacity:0})
+		} else {
+			var bintext=mobile.text(850,50,['People ','in ','the ','top 10% ','of ','the ','income']).attr({'font-size':22,'font-family':'Lato','text-anchor':'end',texttype:'temp',starting:bin,opacity:1})
+			var bintext2=mobile.text(850,80,['distribution ','have ','nowhere ','to ','go ','but ','down.']).attr({'font-size':22,'font-family':'Lato','text-anchor':'end',texttype:'temp',starting:bin,opacity:1})
+			bintext.selectAll("tspan").attr({opacity:0})
+			bintext2.selectAll("tspan").attr({opacity:0})
+		}
+
+		if(bin!=10){
+			var temprect=mobile.rect(490,57,145,30).attr({fill:color_scale[0],starting:bin,type:'temprect',opacity:0})
+		} else {
+			var temprect=mobile.rect(786,57,66,30).attr({fill:color_scale[1],starting:bin,type:'temprect',opacity:0})
+		}
+
+		setTimeout(function(){
+			bintext.selectAll("tspan").forEach(function(word,i){
+				setTimeout(function(){
+					word.animate({opacity:1},700)
+				},30*i)
+			})
+			
+			bintext2.selectAll("tspan").forEach(function(word,i){
+				setTimeout(function(){
+					if(bin!=10 && i==4){
+						word.attr({fill:'white','font-weight':700})
+						temprect.animate({opacity:1},700)
+						mobile.append(mobile.selectAll('text'))
+						// mobile.append(mobile.selectAll('[overlay]'))
+					}
+					if(bin==10 && i==6){
+						word.attr({fill:'white','font-weight':700})
+						temprect.animate({opacity:1},700)
+						mobile.append(mobile.selectAll('text'))
+						// mobile.append(mobile.selectsAll('[overlay]'))
+					}
+					word.animate({opacity:1},700)
+				},30*(i+8))
+			})
+		},100)
+
+		// bottomtext
+		var percentchance=0
+		for(var i=bin-2;i>-1;i--){
+			percentchance=percentchance+data['All'][type][bin][i]
+		}
+
+		if(bin!=1){
+			var bintext3=mobile.text(50,620,['People ','in ','the ',((bin-1)*10+'-'),(bin*10+'%'),' percentile ','of ','earnings ','have ','a ',percentchance.toFixed()+'% ','chance ']).attr({'font-size':22,'font-family':'Lato','text-anchor':'start',texttype:'temp',starting:bin,opacity:1})
+			var bintext4=mobile.text(50,650,['of ','falling ','into ','a ','lower income ','bracket ','15 ','years ','later.']).attr({'font-size':22,'font-family':'Lato','text-anchor':'start',texttype:'temp',starting:bin,opacity:1})
+			bintext3.selectAll("tspan").attr({opacity:0})
+			bintext4.selectAll("tspan").attr({opacity:0})
+		} else {
+			var bintext3=mobile.text(50,620,['People ','in ','the ','bottom 10% ','of ','the ','income']).attr({'font-size':22,'font-family':'Lato','text-anchor':'start',texttype:'temp',starting:bin,opacity:1})
+			var bintext4=mobile.text(50,650,['distribution ','have ','nowhere ','to ','go ','but ','up.']).attr({'font-size':22,'font-family':'Lato','text-anchor':'start',texttype:'temp',starting:bin,opacity:1})
+			bintext3.selectAll("tspan").attr({opacity:0})
+			bintext4.selectAll("tspan").attr({opacity:0})
+		}
+
+		if(bin!=1){
+			var temprect2=mobile.rect(196,626,138,30).attr({fill:color_scale[1],starting:bin,type:'temprect',opacity:0})
+		} else {
+			var temprect2=mobile.rect(399,626,35,30).attr({fill:color_scale[0],starting:bin,type:'temprect',opacity:0})
+		}
+
+		setTimeout(function(){
+			bintext3.selectAll("tspan").forEach(function(word,i){
+				setTimeout(function(){
+					word.animate({opacity:1},700)
+				},30*i)
+			})
+			
+			bintext4.selectAll("tspan").forEach(function(word,i){
+				setTimeout(function(){
+					if(bin!=1 && i==4){
+						word.attr({fill:'white','font-weight':700})
+						temprect2.animate({opacity:1},700)
+						mobile.append(mobile.selectAll('text'))
+						mobile.append(mobile.selectAll('[overlay]'))
+					}
+					if(bin==1 && i==6){
+						word.attr({fill:'white','font-weight':700})
+						temprect2.animate({opacity:1},700)
+						mobile.append(mobile.selectAll('text'))
+						mobile.append(mobile.selectAll('[overlay]'))
+					}
+					word.animate({opacity:1},700)
+				},30*(i+8))
+			})
+		},100)
 	}
-
-	if(bin!=10){
-		var bintext=mobile.text(850,50,['People ','in ','the ',((bin-1)*10+'-'),(bin*10+'%'),' percentile ','of ','earnings ','have ','a ',percentchance.toFixed()+'% ','chance ']).attr({'font-size':22,'font-family':'Lato','text-anchor':'end',texttype:'temp',starting:bin,opacity:1})
-		var bintext2=mobile.text(850,80,['of ','climbing ','into ','a ','higher income ','bracket ','15 ','years ','later.']).attr({'font-size':22,'font-family':'Lato','text-anchor':'end',texttype:'temp',starting:bin,opacity:1})
-		bintext.selectAll("tspan").attr({opacity:0})
-		bintext2.selectAll("tspan").attr({opacity:0})
-	} else {
-		var bintext=mobile.text(850,50,['People ','in ','the ','top 10% ','of ','the ','income']).attr({'font-size':22,'font-family':'Lato','text-anchor':'end',texttype:'temp',starting:bin,opacity:1})
-		var bintext2=mobile.text(850,80,['distribution ','have ','nowhere ','to ','go ','but ','down.']).attr({'font-size':22,'font-family':'Lato','text-anchor':'end',texttype:'temp',starting:bin,opacity:1})
-		bintext.selectAll("tspan").attr({opacity:0})
-		bintext2.selectAll("tspan").attr({opacity:0})
-	}
-
-	setTimeout(function(){
-		bintext.selectAll("tspan").forEach(function(word,i){
-			setTimeout(function(){
-				word.animate({opacity:1},700)
-			},30*i)
-		})
-		
-		bintext2.selectAll("tspan").forEach(function(word,i){
-			setTimeout(function(){
-				if(bin!=10 && i==4){
-					word.attr({fill:'white','font-weight':700})
-					var temprect=mobile.rect(490,57,145,30).attr({fill:color_scale[0],starting:bin,type:'temprect',opacity:0})
-					temprect.animate({opacity:1},700)
-					mobile.append(mobile.selectAll('text'))
-				}
-				if(bin==10 && i==6){
-					word.attr({fill:'white','font-weight':700})
-				}
-				word.animate({opacity:1},700)
-			},30*(i+5))
-		})
-	},100)
-
-	// bottomtext
-	var percentchance=0
-	for(var i=bin-2;i>-1;i--){
-		percentchance=percentchance+data['All'][type][bin][i]
-	}
-
-	if(bin!=1){
-		var bintext3=mobile.text(50,620,['People ','in ','the ',((bin-1)*10+'-'),(bin*10+'%'),' percentile ','of ','earnings ','have ','a ',percentchance.toFixed()+'% ','chance ']).attr({'font-size':22,'font-family':'Lato','text-anchor':'start',texttype:'temp',starting:bin,opacity:1})
-		var bintext4=mobile.text(50,650,['of ','falling ','into ','a ','lower income ','bracket ','15 ','years ','later.']).attr({'font-size':22,'font-family':'Lato','text-anchor':'start',texttype:'temp',starting:bin,opacity:1})
-		bintext3.selectAll("tspan").attr({opacity:0})
-		bintext4.selectAll("tspan").attr({opacity:0})
-	} else {
-		var bintext3=mobile.text(50,620,['People ','in ','the ','bottom 10% ','of ','the ','income']).attr({'font-size':22,'font-family':'Lato','text-anchor':'start',texttype:'temp',starting:bin,opacity:1})
-		var bintext4=mobile.text(50,650,['distribution ','have ','nowhere ','to ','go ','but ','up.']).attr({'font-size':22,'font-family':'Lato','text-anchor':'start',texttype:'temp',starting:bin,opacity:1})
-		bintext3.selectAll("tspan").attr({opacity:0})
-		bintext4.selectAll("tspan").attr({opacity:0})
-	}
-
-	setTimeout(function(){
-		bintext3.selectAll("tspan").forEach(function(word,i){
-			setTimeout(function(){
-				word.animate({opacity:1},700)
-			},30*i)
-		})
-		
-		bintext4.selectAll("tspan").forEach(function(word,i){
-			setTimeout(function(){
-				if(bin!=1 && i==4){word.attr({fill:color_scale[1],'font-weight':700})}
-				if(bin==1 && i==6){word.attr({fill:color_scale[0],'font-weight':700})}
-				word.animate({opacity:1},700)
-			},30*(i+5))
-		})
-	},100)
 }
 
-function reduce_block(ev){
-	var temp=Snap(ev.target)
-	var bin=temp.attr('starting')
-	mobile.selectAll("[starting='"+bin+"'][ending]").forEach(function(step,i){
-		if(parseInt(step.attr('starting'))!=parseInt(step.attr('ending'))){
-			step.stop()
-			step.animate({opacity:.7},300)
-			if(parseInt(step.attr('starting'))<parseInt(step.attr('ending'))){
-				step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout)
-			} else if(parseInt(step.attr('starting'))>parseInt(step.attr('ending'))){
-				step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout)
+function reduce_block(bin){
+	if(selectbin==bin){
+		mobile.selectAll("[starting='"+bin+"'][ending]").forEach(function(step,i){
+			if(parseInt(step.attr('starting'))!=parseInt(step.attr('ending'))){
+				step.stop()
+				step.animate({opacity:.7},300)
+				if(parseInt(step.attr('starting'))<parseInt(step.attr('ending'))){
+					step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout)
+				} else if(parseInt(step.attr('starting'))>parseInt(step.attr('ending'))){
+					step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout)
+				}
 			}
-		}
-	})
+		})
 
-	mobile.selectAll("[starting='"+bin+"'][texttype]").forEach(function(word,i){
-		word.stop()
-	})
-	mobile.selectAll("[starting='"+bin+"'][texttype]").animate({opacity:0},100)
-	mobile.selectAll("[starting='"+bin+"'][type='temprect']").forEach(function(rect,i){
-		// rect.stop()
-		rect.animate({opacity:0},100,function(){rect.remove()})
-	})
-	
+		mobile.selectAll("[starting='"+bin+"'][texttype]").forEach(function(word,i){
+			word.stop()
+			word.animate({opacity:0},100)
+		})
+		mobile.selectAll("[starting='"+bin+"'][texttype]").animate({opacity:0},100)
+		mobile.selectAll("[starting='"+bin+"'][type='temprect']").forEach(function(rect,i){
+			// rect.stop()
+			rect.animate({opacity:0},100,function(){rect.remove()})
+		})
+	}
 }
 
 
