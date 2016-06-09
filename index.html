@@ -9,8 +9,8 @@
 		@import url(https://fonts.googleapis.com/css?family=Lato:400,700);
 		.subconstraint{max-width:1045px;}
 		.graph{max-width:1045px}
-		.hed{font-family:'Lato';font-size:22px;font-weight:700;}
-		.dek{font-family:'Lato';font-size:17px;margin-bottom:20px;}
+		.hed{font-family:'Lato';font-size:24px;font-weight:700;}
+		.dek{font-family:'Lato';font-size:19px;margin-bottom:20px;}
 	</style>
 
 	<script>
@@ -28,8 +28,8 @@
 <body>
 	
 	<div class='subconstraint'>
-		<div class='hed'>Income mobility blah blah blah</div>
-		<div class='dek'>Each block represents a 1 </div>
+		<div class='hed'>Workers at the top of the income distribution rarely fall down the income ladder</div>
+		<div class='dek'>Click through the introduction, the mouse over income buckets to get more information. Use the menu below to switch between two time periods.</div>
 		<div class='styled-select'>
 			<span class='select_carat'>
 				<select name="select" onchange='switch_graph()' id='demo_select'>
@@ -69,7 +69,7 @@ function start_slides(){
 	mobile.selectAll('[labeltext]').attr({opacity:0})
 
 	// transparent cover to prevent mouse events
-	var cover=mobile.rect(0,0,1045,700).attr({opacity:0,cover:'none'})
+	var cover=mobile.rect(0,0,1045,700).attr({cursor:'pointer',opacity:0,cover:'none'})
 
 	// slide 1 text
 	var slide1_1=mobile.text(522.5,50,"Each 'bucket' in the graph below represents 10% of U.S. workers.").attr({'font-family':'Lato','font-size':30,'text-anchor':'middle',firstslide:'none'})
@@ -97,7 +97,7 @@ function advance2(){
 		mobile.selectAll('[firstslide]').remove()
 
 		// animate new text
-		var slide2_1=mobile.text(500,280,['Each bucket shows how likely a worker is to', 'be in the same earnings bucket after 15 years']).attr({opacity:0,'font-family':'Lato','font-size':30,'text-anchor':'middle',cursor:'pointer',secondslide:'none'})
+		var slide2_1=mobile.text(500,280,['The middle band shows how likely a worker is to', 'be in the same earnings bucket after 15 years']).attr({opacity:0,'font-family':'Lato','font-size':30,'text-anchor':'middle',cursor:'pointer',secondslide:'none'})
 		slide2_1.selectAll("tspan:not(:first-child)").attr({x:slide2_1.attr('x'),dy:30})
 		slide2_1.animate({opacity:1},800)
 
@@ -133,32 +133,61 @@ function advance3(){
 		mobile.selectAll('rect[starting="10"][ending="10"]').animate({opacity:.4},800)
 
 		mobile.select('text[thirdslide]').attr({text:'Click anywhere (3/3)'})
+		mobile.select('text[secondslide]').remove()
 
-		var slide3_1=mobile.text(500,280,'And how likely to move up...').attr({opacity:0,'font-family':'Lato','font-size':30,'text-anchor':'middle',cursor:'pointer',thirdslide:'none'})
+		var slide3_1=mobile.text(500,80,'The bars show how likely a worker is to move up...').attr({opacity:0,'font-family':'Lato','font-size':30,'text-anchor':'middle',cursor:'pointer',thirdslide:'none'})
 		slide3_1.animate({opacity:1},800,function(){
+			expand_top(5)
+			setTimeout(function(){
+				expand_top(6)
+			},200)
+			setTimeout(function(){
+				expand_top(7,function(){
+					var slide3_2=mobile.text(270,570,'... or down the income ladder.').attr({opacity:0,'font-family':'Lato','font-size':30,'text-anchor':'middle',cursor:'pointer',thirdslide:'none'})
+					slide3_2.animate({opacity:1},800,function(){
+						expand_bottom(4)
+						setTimeout(function(){
+							expand_bottom(5)
+						},200)
+						setTimeout(function(){
+							expand_bottom(6,function(){
+								mobile.click(final_click)
+							})
+						},400)
+					})
 
+				})
+			},400)
 		})
+	})
+}
 
-		// finish slideshow
-		mobile.click(function(){
-			mobile.selectAll('[thirdslide]').animate({opacity:0},600,function(){
-				mobile.select('rect[cover]').remove()
-			})
+function final_click(){
+	mobile.unclick(final_click)
+	mobile.selectAll('[thirdslide]').animate({opacity:0},600,function(){
+		mobile.select('rect[cover]').remove()
+		mobile.selectAll('[thirdslide]').remove()
+	})
 
-			mobile.selectAll('rect[starting][ending]').animate({opacity:.7},800)
-			mobile.selectAll('line').animate({opacity:1},800)
-			mobile.selectAll('[labeltext]').animate({opacity:1},800)
+	mobile.selectAll('rect[starting][ending]').animate({opacity:.7},800)
+	mobile.selectAll('line').animate({opacity:1},800)
+	mobile.selectAll('[labeltext]').animate({opacity:1},800)
 
-			mobile.selectAll('rect[starting="1"][ending="1"]').animate({opacity:1},800)
-			mobile.selectAll('rect[starting="2"][ending="2"]').animate({opacity:1},800)
-			mobile.selectAll('rect[starting="3"][ending="3"]').animate({opacity:1},800)
-			mobile.selectAll('rect[starting="4"][ending="4"]').animate({opacity:1},800)
-			mobile.selectAll('rect[starting="5"][ending="5"]').animate({opacity:1},800)
-			mobile.selectAll('rect[starting="6"][ending="6"]').animate({opacity:1},800)
-			mobile.selectAll('rect[starting="7"][ending="7"]').animate({opacity:1},800)
-			mobile.selectAll('rect[starting="8"][ending="8"]').animate({opacity:1},800)
-			mobile.selectAll('rect[starting="9"][ending="9"]').animate({opacity:1},800)
-			mobile.selectAll('rect[starting="10"][ending="10"]').animate({opacity:1},800)
+	mobile.selectAll('rect[starting="1"][ending="1"]').animate({opacity:1},800)
+	mobile.selectAll('rect[starting="2"][ending="2"]').animate({opacity:1},800)
+	mobile.selectAll('rect[starting="3"][ending="3"]').animate({opacity:1},800)
+	mobile.selectAll('rect[starting="4"][ending="4"]').animate({opacity:1},800)
+	mobile.selectAll('rect[starting="5"][ending="5"]').animate({opacity:1},800)
+	mobile.selectAll('rect[starting="6"][ending="6"]').animate({opacity:1},800)
+	mobile.selectAll('rect[starting="7"][ending="7"]').animate({opacity:1},800)
+	mobile.selectAll('rect[starting="8"][ending="8"]').animate({opacity:1},800)
+	mobile.selectAll('rect[starting="9"][ending="9"]').animate({opacity:1},800)
+	mobile.selectAll('rect[starting="10"][ending="10"]').animate({opacity:1},800,function(){
+		var final=mobile.text(522.5,50,"Try hovering over or touching a bucket").attr({'font-family':'Lato','font-size':30,'text-anchor':'middle',firstslide:'none',opacity:0})
+		final.animate({opacity:1},800,function(){
+			setTimeout(function(){
+				final.animate({opacity:0},800)
+			},1000)
 		})
 	})
 }
@@ -275,7 +304,7 @@ function show_value(ev){
 
 	if(temp.attr('starting')==undefined){
 
-	} else if(parseInt(temp.attr('starting'))!=parseInt(temp.attr('ending'))){
+	} else if(parseInt(temp.attr('starting'))!=parseInt(temp.attr('ending')) && ev.target.tagName=='rect'){
 		if(parseInt(temp.attr('starting'))>parseInt(temp.attr('ending'))){
 			var color=color_scale[1]
 			var ttext='fall'
@@ -321,12 +350,34 @@ function size_rect(value){
 	return (max_height*value/(max-min))
 }
 
-function expand_top(bin){
+function expand_top(bin,callback){
+	mobile.selectAll("[starting='"+bin+"'][ending]").forEach(function(step,i){
+		if(parseInt(step.attr('starting'))!=parseInt(step.attr('ending'))){
+			if(parseInt(step.attr('starting'))<parseInt(step.attr('ending'))){
+				step.animate({opacity:1},400)
+				var step_pos=step.attr('ending')-step.attr('starting')
+				step.animate({y:parseFloat(step.attr('basey'))-5*step_pos},200,mina.easeinout,function(){step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout,function(){step.animate({opacity:.4},800)})})
+			} 
+		}
+	})
 
+	if(callback){
+		callback()
+	}
 }
 
-function expand_bottom(bin){
-	
+function expand_bottom(bin,callback){
+	mobile.selectAll("[starting='"+bin+"'][ending]").forEach(function(step,i){
+		if(parseInt(step.attr('starting'))!=parseInt(step.attr('ending'))){
+			if(parseInt(step.attr('starting'))<parseInt(step.attr('ending'))){
+
+			} else if(parseInt(step.attr('starting'))>parseInt(step.attr('ending'))){
+				step.animate({opacity:1},400)
+				var step_pos=step.attr('starting')-step.attr('ending')
+				step.animate({y:parseFloat(step.attr('basey'))+5*step_pos},200,mina.easeinout,function(){step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout,function(){step.animate({opacity:.4},800,function(){if(callback){callback()}})})})
+			}
+		}
+	})
 }
 
 function expand_block(ev){
