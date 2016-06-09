@@ -516,7 +516,7 @@ function reduce_block(bin,callback){
 
 		mobile.selectAll("[starting='"+bin+"'][texttype]").forEach(function(word,i){
 			word.stop()
-			word.animate({opacity:0},100)
+			word.animate({opacity:0},100,function(){word.remove()})
 		})
 		mobile.selectAll("[starting='"+bin+"'][texttype]").animate({opacity:0},100)
 		mobile.selectAll("[starting='"+bin+"'][type='temprect']").forEach(function(rect,i){
