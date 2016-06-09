@@ -32,10 +32,9 @@
 		<div class='dek'>Each block represents a 1 </div>
 		<div class='styled-select'>
 			<span class='select_carat'>
-				<select name="select" onchange='demo_change()' id='demo_select'>
-					<option value=0>All</option> 
-					<option value=1 selected>Female</option>
-					<option value=2>Male</option>
+				<select name="select" onchange='switch_graph()' id='demo_select'>
+					<option value='pre'>1981 to 1996</option> 
+					<option value='post'>1993 to 2008</option>
 				</select>
 			</span>
 		</div>
@@ -87,22 +86,33 @@ function draw_base(){
 	var guideline = mobile.line(width-1,110,width-1,590).attr({'guideline':'none','stroke-width':1,'stroke':'#ccc','shape-rendering':'crispEdges','marker-end':amarker,'marker-start':amarker2})
 }
 
-function switch_graph(newtype){
+function switch_graph(){
+	var e = document.getElementById("demo_select")
+	var newtype = e.options[e.selectedIndex].value
 	type=newtype
 	var matrix=data['All'][type]
-	for(var i=1;i<11;i++){
-		for(var j=0;j<10;j++){
-			if(i!=j+1){
-				var temp=mobile.select("rect[starting='"+i+"'][ending='"+(j+1)+"']")
-				var value=matrix[i][j]
-				temp.animate({height:size_rect(value)},800)
-			} else {
-				var value=matrix[i][j]
-				var temp=mobile.select("rect[starting='"+i+"'][ending='"+(j+1)+"']")
-				var temptext=mobile.select("text[starting='"+i+"'][ending='"+(j+1)+"']").attr({text:value.toFixed()+'%'})
+		for(var i=1;i<11;i++){
+			// redo below-the-base boxes
+			var below_start=365
+			for(var j=i-1;j>0;j--){
+				var temp=mobile.select("rect[starting='"+i+"'][ending='"+j+"']")
+				var value=matrix[i][j-1]
+				temp.animate({height:size_rect(value),y:below_start},800)
+				temp.attr({basey:below_start})
+				below_start=below_start+size_rect(value)
 			}
-		}
-	}
+
+			// redo above-the-base boxes
+			var above_start=335
+			for(var j=i+1;j<11;j++){
+				var temp=mobile.select("rect[starting='"+i+"'][ending='"+j+"']")
+				var value=matrix[i][j-1]
+				temp.animate({height:size_rect(value),y:above_start-size_rect(value)},800)
+				temp.attr({basey:above_start-size_rect(value)})
+				above_start=above_start-size_rect(value)
+			}
+		}	
+	})
 }
 
 function draw_graph(matrix){
@@ -328,7 +338,7 @@ function expand_block(ev){
 	}
 }
 
-function reduce_block(bin){
+function reduce_block(bin,callback){
 	if(selectbin==bin){
 		mobile.selectAll("[starting='"+bin+"'][ending]").forEach(function(step,i){
 			if(parseInt(step.attr('starting'))!=parseInt(step.attr('ending'))){
@@ -351,6 +361,11 @@ function reduce_block(bin){
 			// rect.stop()
 			rect.animate({opacity:0},100,function(){rect.remove()})
 		})
+	}
+
+	if(callback){
+		selectbin=undefined
+		callback()
 	}
 }
 
