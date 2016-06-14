@@ -1,0 +1,728 @@
+<html>
+
+<head>
+	<title>Wage Mobility Interactive</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.4.1/snap.svg-min.js"></script>
+	<!-- <link href="css/materialdesignicons.min.css" media="all" rel="stylesheet" type="text/css" /> -->
+
+	<style>
+		@import url(https://fonts.googleapis.com/css?family=Lato:400,700);
+		.subconstraint{max-width:1045px;}
+		.graph{max-width:1045px}
+		.hed{font-family:'Lato';font-size:24px;font-weight:700;}
+		.dek{font-family:'Lato';font-size:19px;margin-bottom:20px;}
+	</style>
+</head>
+
+<body>
+	
+	<div class='subconstraint'>
+		<div class='hed'>Workers at the top of the income distribution rarely fall down the income ladder</div>
+		<div class='dek'>Click through the introduction, the mouse over income buckets to get more information. Use the menu below to switch between two time periods.</div>
+		<div class='styled-select'>
+			<span class='select_carat'>
+				<select name="select" onchange='switch_graph()' id='demo_select'>
+					<option value='All'>All</option> 
+					<option value='Women'>Women</option>
+					<option value='Men'>Men</option>
+					<option value='High School'>High School or Less</option>
+					<option value='Some College'>Some College</option>
+					<option value='Finished College'>College +</option>
+				</select>
+			</span>
+		</div>
+	</div>
+
+	<div class='subconstraint'>
+		<svg id="income_graph" viewbox='0,0,1045,700' ></svg>
+	</div>
+
+</body>
+
+<script defer>
+var data = {'All':{'differences':{1:[9.46,8.37,5.28,-3.27,-16.38,-15.21,-15.56,-21.11,-6.61,-7.45],2:[10.06,6.89,5.82,7,-3.07,-16.65,-17.92,-24.19,-12.25,-26.6],3:[9.54,6.83,2.52,7.07,0.49,-9.97,-12.88,-14.84,-12.2,-15.25],4:[10.43,5.77,9.93,7.5,6.69,-2.86,-18.36,-15.47,-18.75,-19.17],5:[7.7,1.22,3.59,6.28,11.04,2.46,-5.35,-9.49,-18.85,-20.44],6:[5.77,1.59,1.11,8.19,12.12,11.04,-1.77,-8.68,-16.26,-24.57],7:[15.85,7.37,10.66,6.2,11.6,11.8,8.65,-5.34,-19.48,-25.75],8:[23.42,10.29,1.91,5.26,7.29,7.76,6.03,7.34,-7.98,-23.92],9:[18.16,18.45,11.56,-0.22,5.06,-5.32,1.79,.5,8.46,-13.01],10:[2.89,-19.14,-15.7,-11.99,-15.22,-12.2,-12.85,-10.71,-7.1,8.58]}},'Women':{'differences':{1:[9.71,7.61,5.81,-1.67,-17.44,-19.83,-10.21,-22.35,-14.18,-10.93],2:[8.27,6.33,8.68,6.4,-2.12,-18.02,-20.63,-31.13,-14.8,-23.85],3:[7.94,6.68,4.58,5.69,2.83,-16.45,-18,-10.98,-5.21,-17.68],4:[10.5,9.21,10.54,7.6,4.78,-4.06,-22.23,-20.46,-22.9,-4.65],5:[14.17,8.42,-1.73,2.95,14.49,2.23,-7.36,-9.63,-27.24,-24.27],6:[15.42,-2.97,3.56,16.96,9,16.28,-4.59,-11.04,-25.77,-25.86],7:[16.04,17.69,5.03,3.79,8.8,7.41,8.11,-5.09,-19.68,-19.62],8:[5.61,11.76,3.81,11.03,12.35,-11.71,1.42,1.89,4.15,-19.79],9:[18,33.02,1.9,-2.94,-7.3,7.9,-15.69,-12.19,11.6,-2.95],10:[-26.82,-42.92,-46.96,-34.2,-33.78,-30.59,-18.31,-.87,-5.68,37.1]}},'Men':{'differences':{1:[7.74,15.7,10.43,-5.91,-9.09,-2.36,-31.98,-25.15,-10.4,-21.43],2:[13.91,9.91,2.04,11.68,-3.47,-14.83,-15.57,-13.92,-17.82,-36.65],3:[11.95,7.28,.11,13.25,-1.79,.88,-5.78,-21.86,-22.61,-19.28],4:[10.79,1.49,9.18,7.95,10.67,-1.06,-13.58,-10.4,-16.27,-29.17],5:[.21,-5.26,8.97,9.48,7.67,2.37,-3.49,-9.05,-11.66,-16.94],6:[-2.73,4.96,-.5,2.54,14.75,6.83,-.07,-7.29,-8.63,-22.19],7:[10.91,-1.22,13,8.15,14.18,15.12,8.73,-6.26,-19.76,-25.6],8:[23.66,5.19,-.034,3.49,7.21,17.57,8.1,9.32,-12.98,-23.37],9:[3.03,5.93,9.9,-1.62,8.11,-9.73,7.48,4.65,7.43,-12.9],10:[.37,-21.31,-11.31,-12.32,-15.91,-11.92,-15.9,-13.85,-7.27,8.5]}},'High School':{'differences':{1:[2.9,4.24,3.26,-2.44,-17.81,-13.44,-18.29,3.53,44.79,18.02],2:[8.63,.47,.67,5.13,-3.21,-23.03,-1.5,-29.03,4.37,-26.15],3:[2.47,-1.73,.2,3.72,1.89,1.42,-3.12,-12.07,-21.28,-19.17],4:[1.57,.47,7.81,4.58,.53,-.83,-17.79,-11.84,-5.06,-25.15],5:[.79,7.81,-.45,5.88,8.22,-5.13,-8.36,-10.66,-14.02,-13.36],6:[-6.62,2.63,-.9,9.22,7.56,7.88,-5.31,-8.74,-20.61,-19.32],7:[19.4,3.2,8.26,15.35,8.6,10.47,1.12,-16.11,-23.1,-27.67],8:[3.61,3.75,-4.82,22.18,14.67,17.1,5.91,-3.79,-21.6,-21.04],9:[14.66,6.1,16.24,7.22,21.22,-2.5,12.13,6.79,-5.47,-30.22],10:[4.69,-11.24,-18.34,-10.56,12.4,-.1,-4.84,4.01,.09,1.88]}},'Some College':{'differences':{1:[12.53,9.56,-.25,-3.8,-15.07,-14.14,-10.9,-15.59,-5.92,17.36],2:[6.89,5.68,6.17,3.27,-6.34,-12.01,-19.27,-7.08,4.7,-10.3],3:[9.53,18.53,2,7.54,-1.82,-17.81,-15.08,-15.06,-5.51,1.11],4:[9.94,1.31,6.79,7.72,12.69,-3.43,-14.77,-17.25,-24.36,-10.87],5:[9,-10.54,9.7,3.82,10.92,2.45,-5.02,-12.22,-10.34,-14.76],6:[2.34,-11.74,3.03,7.29,11.74,6.04,-.93,-8.26,-8.51,-15.91],7:[5.55,15.23,15.51,-1.53,14.53,14.09,2.8,-7.41,-18.16,-22.03],8:[34.34,25.32,-6.52,-5.93,4.31,7.64,10.2,11.82,-14.09,-28.45],9:[29.47,12.02,13.61,-7.07,-.1,-8.08,4.21,6.22,6.26,-18.41],10:[-.68,-12.35,-21.91,8.7,-21.15,-10.91,-1.43,-3.21,8.55,1.27]}},'Finished College':{'differences':{1:[27.19,16.00,35.52,-6.47,-13.4,-15.47,-9.26,-28.16,-16.88,-14.22],2:[11.04,45.8,28.38,18.04,7.93,-11.18,-21.87,-25.85,-20.21,-25.62],3:[30.82,18.11,18.71,19.63,2.94,-13.47,-16.38,-14.21,-11.07,-14.68],4:[35.16,33.07,18.11,31.22,15.72,-5.13,-20.72,-17.07,-16.02,-20.35],5:[24.55,-.61,4.54,10.44,20.53,25.97,4.14,-5.66,-27.99,-24.6],6:[40.68,14.6,-.98,6.51,31.9,29.7,7.78,-8.26,-19.59,-33.15],7:[35.94,3.51,8.64,2.28,14.73,17.85,34.35,8.15,-20.82,-30.99],8:[40.72,12.71,30.35,1.32,8.44,-1.49,7.89,18.62,2.33,-28.98],9:[17.19,53.59,17.43,3.42,1.68,-.71,6.32,-5.81,17.83,-12.39],10:[34.36,-10.28,16.33,-9.23,-6.88,-8.79,-10.34,-10.53,-12.71,4.47]}}}
+
+var mobile = Snap('#income_graph')
+var color_scale = ['#67c2a5','#fc8d62']
+var pos_colors=['#b7dfd1','#67c2a5','#33836A','#205946']
+var neg_colors=['#fbcdbb','#f58c63','#c63F26','#8e2A1d']
+var width=950
+var left_margin=0
+var type='All'
+var selectbin
+var slide=1
+var svgel=document.getElementById('income_graph')
+var pt=svgel.createSVGPoint()
+var t1,t2,t3,t4
+
+if(window.outerWidth>800){
+	wide=1
+} else{
+	wide=2
+	var shape = document.getElementById("income_graph");
+	shape.setAttribute("viewBox", "0,0,1045,1400");
+}
+
+// issue commands
+draw_base()
+draw_graph(data[type]['differences'])
+mobile.mousemove(show_value)
+// start_slides(1)
+
+function clear_slides(cover,callback,immediate){
+	nub1.unclick(start_slides)
+	nub2.unclick(advance2)
+	nub3.unclick(advance3)
+	nub4.unclick(final_click)
+
+	try{mobile.selectAll('[cover]').remove()}catch(err){}
+
+	mobile.selectAll('[firstslide]').animate({opacity:0},500,function(){mobile.selectAll('[firstslide]').remove()})
+	mobile.selectAll('[secondslide]').animate({opacity:0},500,function(){mobile.selectAll('[secondslide]').remove()})
+	mobile.selectAll('[thirdslide]').animate({opacity:0},500,function(){mobile.selectAll('[thirdslide]').remove()})
+	mobile.selectAll('[texttype="temp"]').animate({opacity:0},500,function(){mobile.selectAll('[texttype="temp"]').remove()})
+	mobile.selectAll('[type="temprect"]').animate({opacity:0},500,function(){mobile.selectAll('[type="temprect"]').remove()})
+	
+	if(parseInt(mobile.selectAll('[graphfade]')[0].attr('opacity'))===0){
+		mobile.selectAll('[graphfade]').animate({opacity:1},600)
+	}
+
+	mobile.selectAll('[cover]').remove()
+	if(cover==1){
+		var cover=mobile.rect(0,0,1045,700*wide).attr({fill:'none',cover:'none','pointer-events':'visibleFill'})
+		mobile.selectAll('line').attr({opacity:.4})
+		mobile.selectAll('rect[starting]').attr({opacity:.4})
+		mobile.selectAll('[labeltext]').attr({opacity:0})	
+	}
+
+	mobile.append(mobile.selectAll('[nub]'))
+	if(immediate==1){var stall=0}else{var stall=600}
+
+	setTimeout(function(){
+		callback()
+	},stall)
+}
+
+function start_slides(immediate){
+	if(immediate==undefined){immediate=0}
+
+	// nub stuff
+	nub1.attr({'fill-opacity':1,fill:'#b7dfd1'})
+	nub2.attr({'fill-opacity':.4,fill:'white'})
+	nub3.attr({'fill-opacity':.4,fill:'white'})
+	nub4.attr({'fill-opacity':.4,fill:'white'})
+
+
+	clear_slides(1,function(){
+		nub2.click(advance2)
+		nub3.click(advance3)
+		nub4.click(final_click)
+
+		// cover stuff
+		var cover=mobile.rect(0,0,1045,700*wide).attr({'pointer-events':'visibleFill',fill:'none','cover':'none',cursor:'pointer'})
+		cover.click(advance2)
+		mobile.append(nub1)
+		mobile.append(nub2)
+		mobile.append(nub3)
+		mobile.append(nub4)
+
+		// slide 1 text
+		var slide1_1=mobile.text(522.5,50*wide,"Each 'bucket' in the graph below represents 10% of U.S. workers.").attr({'font-family':'Lato','font-size':30,'text-anchor':'middle',firstslide:'none'})
+		
+		var slide1_2=mobile.text(82.5,551*wide,["The poorest 10%","are on the left"]).attr({'font-family':'Lato','font-size':30,firstslide:'none'})
+		mobile.path('M45,'+(wide*370)+' L45,'+(wide*555)+' L75,'+(wide*555)).attr({stroke:'black',fill:'none',firstslide:'none'})
+		slide1_2.selectAll("tspan:not(:first-child)").attr({x:slide1_2.attr('x'),dy:30})
+		
+		var slide1_3=mobile.text(860.5,161*wide,["The richest 10%","are on the right"]).attr({'font-family':'Lato','font-size':30,'text-anchor':'end',firstslide:'none'})
+		mobile.path('M900,'+(wide*330)+' L900,'+(wide*165)+' L870,'+(wide*165)).attr({stroke:'black',fill:'none',firstslide:'none'})
+		slide1_3.selectAll("tspan:not(:first-child)").attr({x:slide1_3.attr('x'),dy:30})
+	},immediate)
+}
+
+function advance2(){
+	// nub stuff
+	nub2.attr({'fill-opacity':1,fill:'#b7dfd1'})
+	nub1.attr({'fill-opacity':.4,fill:'white'})
+	nub3.attr({'fill-opacity':.4,fill:'white'})
+	nub4.attr({'fill-opacity':.4,fill:'white'})
+
+	// get rid of firstslide
+	clear_slides(1,function(){
+		nub1.click(start_slides)
+		nub3.click(advance3)
+		nub4.click(final_click)
+
+		// cover stuff
+		var cover=mobile.rect(0,0,1045,700*wide).attr({'pointer-events':'visibleFill',fill:'none','cover':'none',cursor:'pointer'})
+		cover.click(advance3)
+		mobile.append(nub1)
+		mobile.append(nub2)
+		mobile.append(nub3)
+		mobile.append(nub4)
+
+		// animate new text
+		var slide2_1=mobile.text(500,280*wide+(wide-1)*60,['The middle band shows how likely a worker is to', 'be in the same earnings bucket after 15 years']).attr({opacity:0,'font-family':'Lato','font-size':30,'text-anchor':'middle',cursor:'pointer',secondslide:'none'})
+		slide2_1.selectAll("tspan:not(:first-child)").attr({x:slide2_1.attr('x'),dy:30})
+		slide2_1.animate({opacity:1},800)
+
+		mobile.selectAll('rect[starting="1"][ending="1"]').animate({opacity:1},800)
+		mobile.selectAll('rect[starting="2"][ending="2"]').animate({opacity:1},800)
+		mobile.selectAll('rect[starting="3"][ending="3"]').animate({opacity:1},800)
+		mobile.selectAll('rect[starting="4"][ending="4"]').animate({opacity:1},800)
+		mobile.selectAll('rect[starting="5"][ending="5"]').animate({opacity:1},800)
+		mobile.selectAll('rect[starting="6"][ending="6"]').animate({opacity:1},800)
+		mobile.selectAll('rect[starting="7"][ending="7"]').animate({opacity:1},800)
+		mobile.selectAll('rect[starting="8"][ending="8"]').animate({opacity:1},800)
+		mobile.selectAll('rect[starting="9"][ending="9"]').animate({opacity:1},800)
+		mobile.selectAll('rect[starting="10"][ending="10"]').animate({opacity:1},800)
+	})
+}
+
+function advance3(){
+	// nub stuff
+	nub3.attr({'fill-opacity':1,fill:'#b7dfd1'})
+	nub1.attr({'fill-opacity':.4,fill:'white'})
+	nub2.attr({'fill-opacity':.4,fill:'white'})
+	nub4.attr({'fill-opacity':.4,fill:'white'})
+
+	clear_slides(1,function(){
+		nub1.click(start_slides)
+		nub2.click(advance2)
+		nub4.click(final_click)
+
+		// cover stuff
+		var cover=mobile.rect(0,0,1045,700*wide).attr({'pointer-events':'visibleFill',fill:'none','cover':'none',cursor:'pointer'})
+		cover.click(final_click)
+		mobile.append(nub1)
+		mobile.append(nub2)
+		mobile.append(nub3)
+		mobile.append(nub4)
+
+		mobile.selectAll('rect[starting="1"][ending="1"]').animate({opacity:.4},800)
+		mobile.selectAll('rect[starting="2"][ending="2"]').animate({opacity:.4},800)
+		mobile.selectAll('rect[starting="3"][ending="3"]').animate({opacity:.4},800)
+		mobile.selectAll('rect[starting="4"][ending="4"]').animate({opacity:.4},800)
+		mobile.selectAll('rect[starting="5"][ending="5"]').animate({opacity:.4},800)
+		mobile.selectAll('rect[starting="6"][ending="6"]').animate({opacity:.4},800)
+		mobile.selectAll('rect[starting="7"][ending="7"]').animate({opacity:.4},800)
+		mobile.selectAll('rect[starting="8"][ending="8"]').animate({opacity:.4},800)
+		mobile.selectAll('rect[starting="9"][ending="9"]').animate({opacity:.4},800)
+		mobile.selectAll('rect[starting="10"][ending="10"]').animate({opacity:.4},800)
+
+		var downbox1=mobile.rect(767,53*wide+(wide-1)*28,41,38).attr({opacity:0,fill:color_scale[0],thirdslide:'none'})
+		var slide3_1=mobile.text(500,80*wide,['The bars show how likely a worker is to move ','up',' ...']).attr({opacity:0,'font-family':'Lato','font-size':30,'text-anchor':'middle',cursor:'pointer',thirdslide:'none'})
+		slide3_1.selectAll("tspan")[1].attr({'font-weight':700,fill:'white'})
+		downbox1.animate({opacity:1},800)
+		slide3_1.animate({opacity:1},800,function(){
+			expand_top(5)
+			t1=setTimeout(function(){
+				expand_top(6)
+			},200)
+			t2=setTimeout(function(){
+				expand_top(7,function(){
+					var downbox=mobile.rect(137,539*wide+(wide-1)*28,80,38).attr({opacity:0,fill:color_scale[1],thirdslide:'none'})
+					var slide3_2=mobile.text(270,570*wide,['... or ','down',' the income ladder.']).attr({opacity:0,'font-family':'Lato','font-size':30,'text-anchor':'middle',cursor:'pointer',thirdslide:'none'})
+					slide3_2.selectAll("tspan")[1].attr({'font-weight':700,fill:'white'})
+					downbox.animate({opacity:1},800)
+					slide3_2.attr({})
+					slide3_2.animate({opacity:1},800,function(){
+						expand_bottom(4)
+						t3=setTimeout(function(){
+							expand_bottom(5)
+						},200)
+						t4=setTimeout(function(){
+							expand_bottom(6,function(){
+							})
+						},400)
+					})
+
+				})
+			},400)
+		})
+	})
+}
+
+function final_click(){
+	clear_slides(0,function(){
+		nub1.click(start_slides)
+		nub2.click(advance2)
+		nub3.click(advance3)
+	})
+
+	mobile.selectAll('[graphfade]').animate({opacity:0},400)
+
+	// nub stuff
+	nub4.attr({'fill-opacity':1,fill:'#b7dfd1'})
+	nub1.attr({'fill-opacity':.4,fill:'white'})
+	nub2.attr({'fill-opacity':.4,fill:'white'})
+	nub3.attr({'fill-opacity':.4,fill:'white'})
+
+	// mobile.selectAll('rect[starting][ending]').stop()
+	// stopfade(function(){mobile.selectAll('rect[starting][ending]').animate({opacity:.7},800)})
+	clearTimeout(t1)
+	clearTimeout(t2)
+	clearTimeout(t3)
+	clearTimeout(t4)
+	setTimeout(function(){
+		mobile.selectAll('rect[starting][ending]').forEach(function(step,i){
+			step.stop()
+			step.animate({opacity:.7},400)
+			step.animate({y:step.attr('basey')},400)
+		})
+	},1600)
+	// mobile.selectAll('rect[starting][ending]').stop()
+	// mobile.selectAll('rect[starting][ending]').animate({opacity:.7},800)
+	mobile.selectAll('line').animate({opacity:1},800)
+	mobile.selectAll('[labeltext]').animate({opacity:1},800)
+
+	mobile.selectAll('rect[starting="1"][ending="1"]').animate({opacity:1},800)
+	mobile.selectAll('rect[starting="2"][ending="2"]').animate({opacity:1},800)
+	mobile.selectAll('rect[starting="3"][ending="3"]').animate({opacity:1},800)
+	mobile.selectAll('rect[starting="4"][ending="4"]').animate({opacity:1},800)
+	mobile.selectAll('rect[starting="5"][ending="5"]').animate({opacity:1},800)
+	mobile.selectAll('rect[starting="6"][ending="6"]').animate({opacity:1},800)
+	mobile.selectAll('rect[starting="7"][ending="7"]').animate({opacity:1},800)
+	mobile.selectAll('rect[starting="8"][ending="8"]').animate({opacity:1},800)
+	mobile.selectAll('rect[starting="9"][ending="9"]').animate({opacity:1},800)
+	mobile.selectAll('rect[starting="10"][ending="10"]').animate({opacity:1},800,function(){
+		var final=mobile.text(522.5,310*wide+(wide-1)*20,"Try hovering over or touching a bucket").attr({'font-family':'Lato','font-size':30,'text-anchor':'middle',firstslide:'none',opacity:0,'pointer-events':'none'})
+		final.animate({opacity:1},800,function(){
+			setTimeout(function(){
+				final.animate({opacity:0},800)
+			},1000)
+		})
+	})
+}
+
+function stopfade(callback){
+	mobile.selectAll('rect[starting][ending]').forEach(function(step,i){
+		step.stop()
+		step.animate({opacity:.7},400)
+		// step.animate({y:step.attribute('basey')},400)
+	})
+	callback()
+}
+
+function draw_base(){
+	var arrow = mobile.path('M0,0 L0,4 L6,2 L0,0').attr({fill:'#ccc'})
+	var arrow2 = mobile.path('M6,0 L6,4 L0,2 L6,0').attr({fill:'#ccc'})
+	var amarker = arrow.marker(0,0,6,4,0,2).attr({});
+	var amarker2 = arrow2.marker(0,0,6,4,6,2).attr({});
+
+	var rich_end = mobile.text(width-1,79*wide+(wide-1)*30,['Richer after','15 years']).attr({'font-family':'Lato','text-anchor':'middle','labeltext':'none'})
+	rich_end.selectAll("tspan:not(:first-child)").attr({x:rich_end.attr('x'),dy:15})
+	var poor_end = mobile.text(width,613*wide-(wide-1)*27,['Poorer after','15 years']).attr({'font-family':'Lato','text-anchor':'middle','labeltext':'none'})
+	poor_end.selectAll("tspan:not(:first-child)").attr({x:poor_end.attr('x'),dy:15})
+	var stay_same = mobile.text(width+4,348*wide,['No change','in income']).attr({'font-family':'Lato','text-anchor':'start','labeltext':'none'})
+	stay_same.selectAll("tspan:not(:first-child)").attr({x:parseFloat(stay_same.attr('x')),dy:15})
+
+	// grid lines
+	var percents=[10,20,30,40,50,60,70,80,90]
+	for (var i=0;i<percents.length;i++){
+		var size=size_rect(0)*percents[i]/10
+		mobile.line(left_margin,wide*(335-size),left_margin+width,wide*(335-size)).attr({stroke:'#eee','stroke-width':1,'shape-rendering':'crispEdges'})
+		if(i!=10){mobile.line(left_margin,wide*(365+size),left_margin+width,wide*(365+size)).attr({stroke:'#eee','stroke-width':1,'shape-rendering':'crispEdges'})}
+		// mobile.text(left_margin+width+4,-(wide-1)*4+wide*(4+335-size),percents[i]+'%').attr({'font-family':'Lato',fill:'#aaa','font-size':13})
+		// if(i!=6){mobile.text(left_margin+width+4,-(wide-1)*4+wide*(4+365+size),percents[i]+'%').attr({'font-family':'Lato',fill:'#aaa','font-size':13})}
+	}
+
+	// key
+	var xstart=500
+	var ystart=60
+	mobile.rect(xstart,ystart,20,20).attr({fill:neg_colors[3]})
+	mobile.rect(xstart+22,ystart,20,20).attr({fill:neg_colors[2]})
+	mobile.rect(xstart+44,ystart,20,20).attr({fill:neg_colors[1]})
+	mobile.rect(xstart+66,ystart,20,20).attr({fill:neg_colors[0]})
+	mobile.rect(xstart+88,ystart,20,20).attr({fill:pos_colors[0]})
+	mobile.rect(xstart+110,ystart,20,20).attr({fill:pos_colors[1]})
+	mobile.rect(xstart+132,ystart,20,20).attr({fill:pos_colors[2]})
+	mobile.rect(xstart+132,ystart,20,20).attr({fill:pos_colors[2]})
+	var lefttext=mobile.text(xstart-6,ystart+7,['Outcome has become','less likely']).attr({'font-family':'Lato','text-anchor':'end'})
+	var righttext=mobile.text(xstart+158,ystart+7,['Outcome has become','more likely']).attr({'font-family':'Lato','text-anchor':'start'})
+	lefttext.selectAll("tspan:not(:first-child)").attr({x:parseFloat(lefttext.attr('x')),dy:15})
+	righttext.selectAll("tspan:not(:first-child)").attr({x:parseFloat(righttext.attr('x')),dy:15})
+
+
+	// static slide navigation
+	// var holder=mobile.rect(266.5,wide*619,340,80).attr({cursor:'pointer','pointer-events':'visibleFill',fill:'#e2f2ed',stroke:color_scale[0],'shape-rendering':'crispEdges','stroke-width':1,'graphfade':'none'})
+	// var slide1_4=mobile.text(285.5,wide*670-(wide-1)*50,"Click anywhere").attr({'font-family':'Lato','font-size':30,'text-anchor':'start',cursor:'pointer','graphfade':'none'})
+	// var pointer=mobile.path('M13.1244203,0 L13.1244203,4 L14.1244203,4 L14.1244203,0 L13.1244203,0 L13.1244203,0 Z M19.5269278,2.57686389 L16.418344,5.09414546 L17.0476644,5.87129142 L20.1562482,3.35400985 L19.5269278,2.57686389 L19.5269278,2.57686389 Z M21.5318564,9.3124234 L17.6343761,8.41261918 L17.4094251,9.38698925 L21.3069053,10.2867935 L21.5318564,9.3124234 L21.5318564,9.3124234 Z M5.94193535,10.2867935 L9.83941561,9.38698925 L9.61446455,8.41261918 L5.71698429,9.3124234 L5.94193535,10.2867935 L5.94193535,10.2867935 Z M7.09259245,3.35400985 L10.2011763,5.87129142 L10.8304967,5.09414546 L7.72191284,2.57686389 L7.09259245,3.35400985 L7.09259245,3.35400985 Z M19.6231595,30.9999999 C23.7659915,31 27.1244203,27.4147752 27.1244203,23.5 C27.1244203,23.5 27.1244203,25.8132437 27.1244203,23.5 L27.1244203,19.7491622 L27.1244203,17.5016756 C27.1244203,16.6723231 26.4586231,16 25.6244203,16 C24.7959932,16 24.1244203,16.6711894 24.1244203,17.5016756 L24.1244203,18 L23.1244203,18 L23.1244203,15.5064385 C23.1244203,14.6744555 22.4586231,14 21.6244203,14 C20.7959932,14 20.1244203,14.6715406 20.1244203,15.5064385 L20.1244203,17 L19.1244203,17 L19.1244203,14.5064385 C19.1244203,13.6744555 18.4586231,13 17.6244203,13 C16.7959932,13 16.1244203,13.6715406 16.1244203,14.5064385 L16.1244203,18 L15.1244203,18 L15.1244203,7.50524116 C15.1244203,6.67391942 14.4586231,6 13.6244203,6 C12.7959932,6 12.1244203,6.66712976 12.1244203,7.50524116 L12.1244203,18.7999878 C10.0660207,16.599567 7.35605012,14.1791206 6.24545305,15.2957153 C5.15828327,16.3887562 7.95978233,19.4007216 11.8717958,25.9830936 C13.6344162,28.9488875 15.8647052,30.9995418 19.6231595,30.9999999 L19.6231595,30.9999999 Z M28.1244203,23.5 C28.1244203,28.1944206 24.3188409,32 19.6244203,32.0000003 C16.5115051,32.0000003 13.2262274,30.5474856 10.9652407,26.4282229 C7.70175208,20.4825159 3.52827319,16.5832077 5.51553361,14.5959473 C6.9371827,13.1742982 9.16926196,14.5381668 11.1244203,16.3667868 L11.1244203,16.3667868 L11.1244203,7.50840855 C11.1244203,6.11541748 12.2437085,5 13.6244203,5 C15.0147583,5 16.1244203,6.12305276 16.1244203,7.50840855 L16.1244203,12.4983653 C16.5422506,12.1853054 17.0616174,12 17.6244203,12 C18.7069384,12 19.6193054,12.6774672 19.9702378,13.6281239 C20.4110134,13.2379894 20.9901312,13 21.6244203,13 C23.0147583,13 24.1244203,14.1182256 24.1244203,15.4976267 L24.1244203,15.5110883 C24.5422506,15.1985158 25.0616174,15.014191 25.6244203,15.014191 C27.0147583,15.014191 28.1244203,16.1335355 28.1244203,17.5143168 L28.1244203,23.5 L28.1244203,23.5 Z').attr({cursor:'pointer','graphfade':'none'})
+	// pointer.transform('t556,'+(wide*644-(wide-1)*23))
+	// nub1=mobile.circle(504,wide*661-(wide-1)*40,4,4).attr({fill:'#B7dfd1',stroke:'#67c2a5',cursor:'pointer','nub':'none'})
+	// nub2=mobile.circle(516,wide*661-(wide-1)*40,4,4).attr({fill:'white',stroke:'#67c2a5','fill-opacity':.4,cursor:'pointer','nub':'none'})
+	// nub3=mobile.circle(528,wide*661-(wide-1)*40,4,4).attr({fill:'white',stroke:'#67c2a5','fill-opacity':.4,cursor:'pointer','nub':'none'})
+	// nub4=mobile.circle(540,wide*661-(wide-1)*40,4,4).attr({fill:'white',stroke:'#67c2a5','fill-opacity':.4,cursor:'pointer','nub':'none'})
+
+	// nub1.click(start_slides)
+	// nub2.click(advance2)
+	// nub3.click(advance3)
+	// nub4.click(final_click)
+
+	var guideline = mobile.line(width-1,wide*110,width-1,wide*590).attr({'guideline':'none','stroke-width':1,'stroke':'#ccc','shape-rendering':'crispEdges','marker-end':amarker,'marker-start':amarker2})
+}
+
+function switch_graph(){
+	var e = document.getElementById("demo_select")
+	var newtype = e.options[e.selectedIndex].value
+	type=newtype
+	var matrix=data[type]['differences']
+	reduce_block(selectbin,function(){
+		for(var i=1;i<11;i++){
+			// redo below-the-base boxes
+			var below_start=365*wide
+			for(var j=i-1;j>0;j--){
+				var temp=mobile.select("rect[starting='"+i+"'][ending='"+j+"']")
+				var value=matrix[i][j-1]
+				temp.animate({height:size_rect(value)*wide,y:below_start},800)
+				temp.attr({basey:below_start,value:value})
+				below_start=below_start+size_rect(value)*wide
+			}
+
+			// redo above-the-base boxes
+			var above_start=335*wide
+			for(var j=i+1;j<11;j++){
+				var temp=mobile.select("rect[starting='"+i+"'][ending='"+j+"']")
+				var value=matrix[i][j-1]
+				temp.animate({height:size_rect(value)*wide,y:above_start-size_rect(value)*wide},800)
+				temp.attr({basey:above_start-size_rect(value)*wide,value:value})
+				above_start=above_start-size_rect(value)*wide
+			}
+
+			// redo the strip
+			var temp=mobile.select("text[starting='"+(i)+"'][ending='"+(i)+"']")
+			temp.attr({'text':matrix[i][i-1].toFixed()+'%'})
+		}	
+	})
+}
+
+function draw_graph(matrix){
+	// 0 to 1000, 10 pixel gutter on left side, 1 pixel margins between
+	var gap=0
+	var total=width-left_margin-10*gap
+	var bin_width=total/10
+	var midg=mobile.gradient("l(0,0,0,1)#67c2a5-#fc8d62")
+
+	for(var i=1;i<11;i++){
+		// i is the starting percentile bucket
+		rect_top=0
+		for(var j=0;j<10;j++){
+			// j is the ending percentile bucket (starts at 0 because this is just an indexed array)
+			// draw all rectangles starting at bottom and working up
+			// then shift all rectangle up so that the i-1 rectangle is centered around 350
+			var size=size_rect(matrix[i][j])*wide
+
+			// get appropriate fill
+			if(i==j+1){
+				var stroke='white'
+				var fill=choose_color(matrix[i][j])
+				var opacity=1
+				var size=30*wide
+			} else if(i<j+1){
+				var stroke='white'
+				var fill=choose_color(matrix[i][j])
+				var opacity=.7
+			} else{
+				var stroke='white'
+				var fill=choose_color(matrix[i][j])
+				var opacity=.7
+			}
+			if(j!=0){rect_top=rect_top-size}
+
+			var base_bin=mobile.rect(left_margin+bin_width*(i-1)+gap*(i-1),rect_top,bin_width,size).attr({stroke:stroke,'stroke-width':1,value:matrix[i][j],basex:left_margin+bin_width*(i-1)+gap*(i-1),fill:fill,'shape-rendering':'crispEdges',starting:i,ending:j+1,opacity:opacity})
+			base_bin.hover(expand_block)
+			if(i==j+1){
+				var text_overlay=mobile.text(bin_width/2+left_margin+bin_width*(i-1)+gap*(i-1),rect_top+34*wide,matrix[i][j].toFixed()+'%').attr({'pointer-events':'none',fill:'white',starting:i,ending:j+1,'font-family':'Lato','text-anchor':'middle','font-size':14*wide})
+			}
+		}
+
+		// find x coord of the rect that has starting=i and ending=i
+		var base=mobile.select("rect[starting='"+i+"'][ending='"+i+"']")
+		var coords=base.getBBox()
+		var offset=(350*wide)-(coords.y+coords.height/2)
+
+		mobile.selectAll("[starting='"+i+"']").forEach(function(step,i){
+			var steploc=step.getBBox().y
+			step.attr({y:steploc+offset,basey:steploc+offset})
+		})
+	}
+
+	mobile.append(mobile.selectAll('[guideline]'))
+}
+
+function choose_color(value){
+	if(value<0){
+		if(value>-8){return neg_colors[0]}
+		if(value<=-8 && value>-16){return neg_colors[1]}
+		if(value<=-16 && value>-24){return neg_colors[2]}
+		if(value<=-24){return neg_colors[3]}
+	} else {
+		if(value<8){return pos_colors[0]}
+		if(value>=8 && value<16){return pos_colors[1]}
+		if(value>=16 && value<24){return pos_colors[2]}
+		if(value>=24){return pos_colors[3]}
+	}
+}
+
+function cursorPoint(evt){
+	pt.x=evt.clientX;pt.y=evt.clientY
+	return pt.matrixTransform(svgel.getScreenCTM().inverse())
+}
+
+function show_value(ev){
+
+	// svgel.addEventListener('mousemove',function(evt){
+	// 	var loc=cursorPoint(evt)
+	// 	test(loc,evt,function(){
+	// 		g2.append(g2.selectAll("[type='front2']"))
+	// 	})
+	// })
+
+	var temp=Snap(ev.target)
+	mobile.selectAll('[hovervalue]').remove()
+
+	if(temp.attr('starting')==undefined){
+
+	} else if(parseInt(temp.attr('starting'))!=parseInt(temp.attr('ending')) && ev.target.tagName=='rect'){
+		if(parseInt(temp.attr('starting'))>parseInt(temp.attr('ending'))){
+			var color=color_scale[1]
+			var ttext='fall'
+		} else {
+			var color=color_scale[0]
+			var ttext='climb'
+		}
+
+		var value=parseFloat(temp.attr('value')).toFixed(0)
+		var change=Math.abs(parseInt(temp.attr('starting'))-parseInt(temp.attr('ending')))
+		var loc=cursorPoint(ev)
+		var x=loc['x']
+		var y=loc['y']
+
+		// var x=ev.clientX-document.getElementById("income_graph").getBoundingClientRect()['left']
+		// var y=ev.clientY-document.getElementById("income_graph").getBoundingClientRect()['top']
+		if(x>900){
+			x=x-150
+		}
+		if(change==1){var dec='decile'}else{var dec='deciles'}
+
+		mobile.rect(x+25,y-32,110,57).attr({'pointer-events':'none',fill:'white',stroke:'black','stroke-width':1,'shape-rendering':'crispEdges','hovervalue':'none'})
+		mobile.text(x+80,y-10,value+'%').attr({'pointer-events':'none','hovervalue':'none','font-family':'Lato','font-weight':700,'font-size':'18px','text-anchor':'middle',fill:color})
+		mobile.text(x+80,y+4,'chance to '+ttext).attr({'pointer-events':'none','hovervalue':'none','font-family':'Lato','font-size':'13px','text-anchor':'middle'})
+		mobile.text(x+80,y+16,change+' income '+dec).attr({'pointer-events':'none','hovervalue':'none','font-family':'Lato','font-size':'13px','text-anchor':'middle'})
+	}
+}
+
+function choose_gray_scale(value){
+	if(value<19){return '#999'}
+	if(value>=19 && value<22){return '#777'}
+	if(value>=22 && value<30){return '#555'}
+	if(value>=30){return '#222'}
+}
+
+function size_rect(value){
+	// value to size a rectangle vertically based on the value it represents
+	var max=60
+	var min=0
+
+	// max height is the largest a bin can be (vertically) based on data value
+	// since the max value is 60, and there are 300 pixels of vertical real-
+	// estate available, the largest bin can be 60% of those 300 pixels. Scale
+	// everything else accordingly.
+	var max_height=300*.6
+
+	return 22
+}
+
+function expand_top(bin,callback){
+	mobile.selectAll("[starting='"+bin+"'][ending]").forEach(function(step,i){
+		if(parseInt(step.attr('starting'))!=parseInt(step.attr('ending'))){
+			if(parseInt(step.attr('starting'))<parseInt(step.attr('ending'))){
+				step.animate({opacity:1},400)
+				var step_pos=step.attr('ending')-step.attr('starting')
+				step.animate({y:parseFloat(step.attr('basey'))-5*step_pos},200,mina.easeinout,function(){step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout,function(){step.animate({opacity:.4},800)})})
+			} 
+		}
+	})
+
+	if(callback){
+		callback()
+	}
+}
+
+function expand_bottom(bin,callback){
+	mobile.selectAll("[starting='"+bin+"'][ending]").forEach(function(step,i){
+		if(parseInt(step.attr('starting'))!=parseInt(step.attr('ending'))){
+			if(parseInt(step.attr('starting'))<parseInt(step.attr('ending'))){
+
+			} else if(parseInt(step.attr('starting'))>parseInt(step.attr('ending'))){
+				step.animate({opacity:1},400)
+				var step_pos=step.attr('starting')-step.attr('ending')
+				step.animate({y:parseFloat(step.attr('basey'))+5*step_pos},200,mina.easeinout,function(){step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout,function(){step.animate({opacity:.4},800,function(){if(callback){callback()}})})})
+			}
+		}
+	})
+}
+
+function expand_block(ev){
+	var temp=Snap(ev.target)
+	var bin=temp.attr('starting')
+	if(bin!=selectbin){
+		reduce_block(selectbin)
+		selectbin=bin
+
+		// manipulate blocks
+		mobile.selectAll("[starting='"+bin+"'][ending]").forEach(function(step,i){
+			if(parseInt(step.attr('starting'))!=parseInt(step.attr('ending'))){
+				step.animate({opacity:1},400)
+				if(parseInt(step.attr('starting'))<parseInt(step.attr('ending'))){
+					var step_pos=step.attr('ending')-step.attr('starting')
+					step.animate({y:parseFloat(step.attr('basey'))-5*step_pos},200,mina.easeinout,function(){step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout)})
+				} else if(parseInt(step.attr('starting'))>parseInt(step.attr('ending'))){
+					var step_pos=step.attr('starting')-step.attr('ending')
+					step.animate({y:parseFloat(step.attr('basey'))+5*step_pos},200,mina.easeinout,function(){step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout)})
+				}
+			}
+		})
+
+		// write and fade-in text
+		// toptext
+		// var percentchance=0
+		// for(var i=bin;i<10;i++){
+		// 	percentchance=percentchance+data['All'][type][bin][i]
+		// }
+
+		// if(bin!=10){
+		// 	var bintext=mobile.text(850,50*wide,['Workers ','in ','the ',((bin-1)*10+'-'),(bin*10+'%'),' percentile ','of ','earnings ','have ','a ',percentchance.toFixed()+'% ','chance ']).attr({'font-size':22,'font-family':'Lato','text-anchor':'end',texttype:'temp',starting:bin,opacity:1})
+		// 	var bintext2=mobile.text(850,50*wide+30,['of ','climbing ','into ','a ','higher income ','bracket ','15 ','years ','later.']).attr({'font-size':22,'font-family':'Lato','text-anchor':'end',texttype:'temp',starting:bin,opacity:1})
+		// 	bintext.selectAll("tspan").attr({opacity:0})
+		// 	bintext2.selectAll("tspan").attr({opacity:0})
+		// } else {
+		// 	var bintext=mobile.text(850,50*wide,['Workers ','in ','the ','top 10% ','of ','the ','income']).attr({'font-size':22,'font-family':'Lato','text-anchor':'end',texttype:'temp',starting:bin,opacity:1})
+		// 	var bintext2=mobile.text(850,50*wide+30,['distribution ','have ','nowhere ','to ','go ','but ','down.']).attr({'font-size':22,'font-family':'Lato','text-anchor':'end',texttype:'temp',starting:bin,opacity:1})
+		// 	bintext.selectAll("tspan").attr({opacity:0})
+		// 	bintext2.selectAll("tspan").attr({opacity:0})
+		// }
+
+		// if(bin!=10){
+		// 	var temprect=mobile.rect(490,57*wide-(wide-1)*7,145,30).attr({fill:color_scale[0],starting:bin,type:'temprect',opacity:0})
+		// } else {
+		// 	var temprect=mobile.rect(786,57*wide-(wide-1)*7,66,30).attr({fill:color_scale[1],starting:bin,type:'temprect',opacity:0})
+		// }
+
+		// setTimeout(function(){
+		// 	bintext.selectAll("tspan").forEach(function(word,i){
+		// 		setTimeout(function(){
+		// 			word.animate({opacity:1},700)
+		// 		},25*i)
+		// 	})
+			
+		// 	bintext2.selectAll("tspan").forEach(function(word,i){
+		// 		setTimeout(function(){
+		// 			if(bin!=10 && i==4){
+		// 				word.attr({fill:'white','font-weight':700})
+		// 				temprect.animate({opacity:1},700)
+		// 				mobile.append(mobile.selectAll('text[texttype]'))
+		// 			}
+		// 			if(bin==10 && i==6){
+		// 				word.attr({fill:'white','font-weight':700})
+		// 				temprect.animate({opacity:1},700)
+		// 				mobile.append(mobile.selectAll('text[texttype]'))
+		// 			}
+		// 			word.animate({opacity:1},700)
+		// 		},25*(i+5))
+		// 	})
+		// },100)
+
+		// bottomtext
+		// var percentchance=0
+		// for(var i=bin-2;i>-1;i--){
+		// 	percentchance=percentchance+data['All'][type][bin][i]
+		// }
+
+		// if(bin!=1){
+		// 	var bintext3=mobile.text(50,580*wide,['Workers ','in ','the ',((bin-1)*10+'-'),(bin*10+'%'),' percentile ','of ','earnings ','have ','a ',percentchance.toFixed()+'% ','chance ']).attr({'font-size':22,'font-family':'Lato','text-anchor':'start',texttype:'temp',starting:bin,opacity:1})
+		// 	var bintext4=mobile.text(50,580*wide+30,['of ','falling ','into ','a ','lower income ','bracket ','15 ','years ','later.']).attr({'font-size':22,'font-family':'Lato','text-anchor':'start',texttype:'temp',starting:bin,opacity:1})
+		// 	bintext3.selectAll("tspan").attr({opacity:0})
+		// 	bintext4.selectAll("tspan").attr({opacity:0})
+		// } else {
+		// 	var bintext3=mobile.text(50,580*wide,['Workers ','in ','the ','bottom 10% ','of ','the ','income']).attr({'font-size':22,'font-family':'Lato','text-anchor':'start',texttype:'temp',starting:bin,opacity:1})
+		// 	var bintext4=mobile.text(50,580*wide+30,['distribution ','have ','nowhere ','to ','go ','but ','up.']).attr({'font-size':22,'font-family':'Lato','text-anchor':'start',texttype:'temp',starting:bin,opacity:1})
+		// 	bintext3.selectAll("tspan").attr({opacity:0})
+		// 	bintext4.selectAll("tspan").attr({opacity:0})
+		// }
+
+		// if(bin!=1){
+		// 	var temprect2=mobile.rect(196,586*wide-(wide-1)*7,138,30).attr({fill:color_scale[1],starting:bin,type:'temprect',opacity:0})
+		// } else {
+		// 	var temprect2=mobile.rect(399,588*wide-(wide-1)*7,35,30).attr({fill:color_scale[0],starting:bin,type:'temprect',opacity:0})
+		// }
+
+		// setTimeout(function(){
+		// 	bintext3.selectAll("tspan").forEach(function(word,i){
+		// 		setTimeout(function(){
+		// 			word.animate({opacity:1},700)
+		// 		},30*i)
+		// 	})
+			
+		// 	bintext4.selectAll("tspan").forEach(function(word,i){
+		// 		setTimeout(function(){
+		// 			if(bin!=1 && i==4){
+		// 				word.attr({fill:'white','font-weight':700})
+		// 				temprect2.animate({opacity:1},700)
+		// 				mobile.append(mobile.selectAll('text[texttype]'))
+		// 			}
+		// 			if(bin==1 && i==6){
+		// 				word.attr({fill:'white','font-weight':700})
+		// 				temprect2.animate({opacity:1},700)
+		// 				mobile.append(mobile.selectAll('text[texttype]'))
+		// 			}
+		// 			word.animate({opacity:1},700)
+		// 		},30*(i+5))
+		// 	})
+		// },100)
+	}
+}
+
+function reduce_block(bin,callback){
+	if(selectbin==bin){
+		mobile.selectAll("[starting='"+bin+"'][ending]").forEach(function(step,i){
+			if(parseInt(step.attr('starting'))!=parseInt(step.attr('ending'))){
+				step.stop()
+				step.animate({opacity:.7},300)
+				if(parseInt(step.attr('starting'))<parseInt(step.attr('ending'))){
+					step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout)
+				} else if(parseInt(step.attr('starting'))>parseInt(step.attr('ending'))){
+					step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout)
+				}
+			}
+		})
+
+		mobile.selectAll("[starting='"+bin+"'][texttype]").forEach(function(word,i){
+			word.stop()
+			word.animate({opacity:0},100,function(){word.remove()})
+		})
+		mobile.selectAll("[starting='"+bin+"'][texttype]").animate({opacity:0},100)
+		mobile.selectAll("[starting='"+bin+"'][type='temprect']").forEach(function(rect,i){
+			// rect.stop()
+			rect.animate({opacity:0},100,function(){rect.remove()})
+		})
+	}
+
+	if(callback){
+		selectbin=undefined
+		callback()
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
