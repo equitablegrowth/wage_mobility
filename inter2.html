@@ -271,12 +271,12 @@ function draw_base2(){
 	// mobile2.line(left_margin2+10*bin_width2,120,left_margin2+10*bin_width2,660).attr({stroke:'#888',opacity:.5,'stroke-dasharray':[4,4]})
 	mobile2.line(left_margin2+4*bin_width2,120*wide,left_margin2+4*bin_width2,660*wide).attr({stroke:'#888',opacity:.5,'stroke-dasharray':[4,4]})
 	mobile2.line(left_margin2+6*bin_width2,120*wide,left_margin2+6*bin_width2,660*wide).attr({stroke:'#888',opacity:.5,'stroke-dasharray':[4,4]})
-	var low=mobile2.text(bin_width2/2,640*wide,['Lowest','Earners']).attr({'font-family':'Lato',fill:'#888','text-anchor':'middle','font-size':12*(wide-1)*1.5})
-	low.selectAll("tspan:not(:first-child)").attr({x:low.attr('x'),dy:14*(wide-1)*1.5})
-	var mid=mobile2.text(5*bin_width2,640*wide,['Middle 20%','of Earners']).attr({'font-family':'Lato',fill:'#888','text-anchor':'middle','font-size':12*(wide-1)*1.5})
-	mid.selectAll("tspan:not(:first-child)").attr({x:mid.attr('x'),dy:14*(wide-1)*1.5})
-	var high=mobile2.text(9.5*bin_width2,640*wide,['Highest','Earners']).attr({'font-family':'Lato',fill:'#888','text-anchor':'middle','font-size':12*(wide-1)*1.5})
-	high.selectAll("tspan:not(:first-child)").attr({x:high.attr('x'),dy:14*(wide-1)*1.5})
+	var low=mobile2.text(bin_width2/2,640*wide,['Lowest','Earners']).attr({'font-family':'Lato',fill:'#888','text-anchor':'middle','font-size':12+(wide-1)*6})
+	low.selectAll("tspan:not(:first-child)").attr({x:low.attr('x'),dy:14+(wide-1)*6})
+	var mid=mobile2.text(5*bin_width2,640*wide,['Middle 20%','of Earners']).attr({'font-family':'Lato',fill:'#888','text-anchor':'middle','font-size':12+(wide-1)*6})
+	mid.selectAll("tspan:not(:first-child)").attr({x:mid.attr('x'),dy:14+(wide-1)*6})
+	var high=mobile2.text(9.5*bin_width2,640*wide,['Highest','Earners']).attr({'font-family':'Lato',fill:'#888','text-anchor':'middle','font-size':12+(wide-1)*6})
+	high.selectAll("tspan:not(:first-child)").attr({x:high.attr('x'),dy:14+(wide-1)*6})
 
 
 	// static slide navigation
