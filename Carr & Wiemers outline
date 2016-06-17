@@ -1,0 +1,26 @@
+Carr & Wiemers outline
+
+- something general about income mobility blah blah blah
+- thesis: most existing literature finds that mobility has been relatively stagnant or has increased a little bit. This paper provides some evidence that maybe it has decreased
+
+Recent rises in income inequality have prompted economists and pundits to re-examine income mobility in America. Intuitively, some observers assume that higher income inequality should be correlated with decreased income mobility as the rich build a bigger lead on the rest of society. But economists who have studied the issue have generally found that income mobility has remained flat since the 1980s. (link Tyler Cowen? http://www.nytimes.com/2015/04/05/upshot/its-not-the-inequality-its-the-immobility.html) EG Grantees Michael D. Carr and Emily E. Wiemers used a new dataset to revisit measurement of income mobility. Their results suggest that income mobility has increased in recent years.
+
+- Main contribution is this new data set - explain why it is better
+- allows the authors to construct a snapshot of mobility in two different time periods
+
+The reason Carr & Wiemers' results differ from the academic consensus is that they use a new data source that they contend has some advantages over the data used in previous articles. They use the SIPP (Survey of Income and Program Participation) to obtain demographics on a large number of workers over a long period of time. Merging this data with administrative from the IRS and the Social Security Administration gives them accurate data on earnings and benefits for each worker. This approach has a number of advantages compared to other attempts at measuring income mobility. The sample size is large and nationally representative, demographic information is available, and individuals are followed for a long time. 
+
+The authors construct a snapshot of income mobility in two time periods: 1981 to 1996, and 1993 to 2008. In each one, workers are observed at the beginning and end of the time period to capture income mobility over a 15-year span. Use the interactive below to explore their results in each of these two time periods.
+
+- inter1
+
+- Carr & Wiemers difference these two time periods 
+- Looking at the graph below, you can see how workers in low brackets are less likely to climb now, and those in the highest bracket are less likely to fall
+
+To see how income mobility has changed in recent years, Carr & Weimers look at how the probability of rising or falling on the income ladder has changed for each decile of earners between the two periods. As the interactive below shows, they find that most workers are less likely to move up the income ladder now, and a bit more likely to fall down the income ladder. The exception is earners at the very top of the income distribution. These workers cannot rise up the income ladder any farther, but they are less likely to fall down it than they used to be.
+
+- inter2
+
+- How should we interpret results that don't agree with the rest of the literature? As administrative data is used more and etc etc we may see surprising results like this one 
+
+How should we interpret results that don't agree with an existing academic literature? Economics is undergoing a kind of data revolution as administrative datasets become more common (link to equitablog). This will no doubt lead to some findings that are inconsistent with existing literature. Whether all of these datasets are really superior to older alternatives is a question that will take some time to work its way through the academy.
