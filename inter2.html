@@ -21,7 +21,7 @@
 		<div class='dek'>The most well-off workers have less chance of falling down the income ladder in recent years. Use the menu to switch between different kinds of workers.</div>
 		<div class='styled-select'>
 			<span class='select_carat'>
-				<select name="select" onchange='switch_graph2()' id='demo_select'>
+				<select name="select" onchange='switch_graph2()' id='demo_select2'>
 					<option value='All'>All</option> 
 					<option value='Women'>Women</option>
 					<option value='Men'>Men</option>
@@ -40,14 +40,14 @@
 </body>
 
 <script defer>
-var data = {'All':{'differences':{1:[9.46,8.37,5.28,-3.27,-16.38,-15.21,-15.56,-21.11,-6.61,-7.45],2:[10.06,6.89,5.82,7,-3.07,-16.65,-17.92,-24.19,-12.25,-26.6],3:[9.54,6.83,2.52,7.07,0.49,-9.97,-12.88,-14.84,-12.2,-15.25],4:[10.43,5.77,9.93,7.5,6.69,-2.86,-18.36,-15.47,-18.75,-19.17],5:[7.7,1.22,3.59,6.28,11.04,2.46,-5.35,-9.49,-18.85,-20.44],6:[5.77,1.59,1.11,8.19,12.12,11.04,-1.77,-8.68,-16.26,-24.57],7:[15.85,7.37,10.66,6.2,11.6,11.8,8.65,-5.34,-19.48,-25.75],8:[23.42,10.29,1.91,5.26,7.29,7.76,6.03,7.34,-7.98,-23.92],9:[18.16,18.45,11.56,-0.22,5.06,-5.32,1.79,.5,8.46,-13.01],10:[2.89,-19.14,-15.7,-11.99,-15.22,-12.2,-12.85,-10.71,-7.1,8.58]}},'Women':{'differences':{1:[9.71,7.61,5.81,-1.67,-17.44,-19.83,-10.21,-22.35,-14.18,-10.93],2:[8.27,6.33,8.68,6.4,-2.12,-18.02,-20.63,-31.13,-14.8,-23.85],3:[7.94,6.68,4.58,5.69,2.83,-16.45,-18,-10.98,-5.21,-17.68],4:[10.5,9.21,10.54,7.6,4.78,-4.06,-22.23,-20.46,-22.9,-4.65],5:[14.17,8.42,-1.73,2.95,14.49,2.23,-7.36,-9.63,-27.24,-24.27],6:[15.42,-2.97,3.56,16.96,9,16.28,-4.59,-11.04,-25.77,-25.86],7:[16.04,17.69,5.03,3.79,8.8,7.41,8.11,-5.09,-19.68,-19.62],8:[5.61,11.76,3.81,11.03,12.35,-11.71,1.42,1.89,4.15,-19.79],9:[18,33.02,1.9,-2.94,-7.3,7.9,-15.69,-12.19,11.6,-2.95],10:[-26.82,-42.92,-46.96,-34.2,-33.78,-30.59,-18.31,-.87,-5.68,37.1]}},'Men':{'differences':{1:[7.74,15.7,10.43,-5.91,-9.09,-2.36,-31.98,-25.15,-10.4,-21.43],2:[13.91,9.91,2.04,11.68,-3.47,-14.83,-15.57,-13.92,-17.82,-36.65],3:[11.95,7.28,.11,13.25,-1.79,.88,-5.78,-21.86,-22.61,-19.28],4:[10.79,1.49,9.18,7.95,10.67,-1.06,-13.58,-10.4,-16.27,-29.17],5:[.21,-5.26,8.97,9.48,7.67,2.37,-3.49,-9.05,-11.66,-16.94],6:[-2.73,4.96,-.5,2.54,14.75,6.83,-.07,-7.29,-8.63,-22.19],7:[10.91,-1.22,13,8.15,14.18,15.12,8.73,-6.26,-19.76,-25.6],8:[23.66,5.19,-.034,3.49,7.21,17.57,8.1,9.32,-12.98,-23.37],9:[3.03,5.93,9.9,-1.62,8.11,-9.73,7.48,4.65,7.43,-12.9],10:[.37,-21.31,-11.31,-12.32,-15.91,-11.92,-15.9,-13.85,-7.27,8.5]}},'High School':{'differences':{1:[2.9,4.24,3.26,-2.44,-17.81,-13.44,-18.29,3.53,44.79,18.02],2:[8.63,.47,.67,5.13,-3.21,-23.03,-1.5,-29.03,4.37,-26.15],3:[2.47,-1.73,.2,3.72,1.89,1.42,-3.12,-12.07,-21.28,-19.17],4:[1.57,.47,7.81,4.58,.53,-.83,-17.79,-11.84,-5.06,-25.15],5:[.79,7.81,-.45,5.88,8.22,-5.13,-8.36,-10.66,-14.02,-13.36],6:[-6.62,2.63,-.9,9.22,7.56,7.88,-5.31,-8.74,-20.61,-19.32],7:[19.4,3.2,8.26,15.35,8.6,10.47,1.12,-16.11,-23.1,-27.67],8:[3.61,3.75,-4.82,22.18,14.67,17.1,5.91,-3.79,-21.6,-21.04],9:[14.66,6.1,16.24,7.22,21.22,-2.5,12.13,6.79,-5.47,-30.22],10:[4.69,-11.24,-18.34,-10.56,12.4,-.1,-4.84,4.01,.09,1.88]}},'Some College':{'differences':{1:[12.53,9.56,-.25,-3.8,-15.07,-14.14,-10.9,-15.59,-5.92,17.36],2:[6.89,5.68,6.17,3.27,-6.34,-12.01,-19.27,-7.08,4.7,-10.3],3:[9.53,18.53,2,7.54,-1.82,-17.81,-15.08,-15.06,-5.51,1.11],4:[9.94,1.31,6.79,7.72,12.69,-3.43,-14.77,-17.25,-24.36,-10.87],5:[9,-10.54,9.7,3.82,10.92,2.45,-5.02,-12.22,-10.34,-14.76],6:[2.34,-11.74,3.03,7.29,11.74,6.04,-.93,-8.26,-8.51,-15.91],7:[5.55,15.23,15.51,-1.53,14.53,14.09,2.8,-7.41,-18.16,-22.03],8:[34.34,25.32,-6.52,-5.93,4.31,7.64,10.2,11.82,-14.09,-28.45],9:[29.47,12.02,13.61,-7.07,-.1,-8.08,4.21,6.22,6.26,-18.41],10:[-.68,-12.35,-21.91,8.7,-21.15,-10.91,-1.43,-3.21,8.55,1.27]}},'Finished College':{'differences':{1:[27.19,16.00,35.52,-6.47,-13.4,-15.47,-9.26,-28.16,-16.88,-14.22],2:[11.04,45.8,28.38,18.04,7.93,-11.18,-21.87,-25.85,-20.21,-25.62],3:[30.82,18.11,18.71,19.63,2.94,-13.47,-16.38,-14.21,-11.07,-14.68],4:[35.16,33.07,18.11,31.22,15.72,-5.13,-20.72,-17.07,-16.02,-20.35],5:[24.55,-.61,4.54,10.44,20.53,25.97,4.14,-5.66,-27.99,-24.6],6:[40.68,14.6,-.98,6.51,31.9,29.7,7.78,-8.26,-19.59,-33.15],7:[35.94,3.51,8.64,2.28,14.73,17.85,34.35,8.15,-20.82,-30.99],8:[40.72,12.71,30.35,1.32,8.44,-1.49,7.89,18.62,2.33,-28.98],9:[17.19,53.59,17.43,3.42,1.68,-.71,6.32,-5.81,17.83,-12.39],10:[34.36,-10.28,16.33,-9.23,-6.88,-8.79,-10.34,-10.53,-12.71,4.47]}}}
+var data2 = {'All':{'differences':{1:[9.46,8.37,5.28,-3.27,-16.38,-15.21,-15.56,-21.11,-6.61,-7.45],2:[10.06,6.89,5.82,7,-3.07,-16.65,-17.92,-24.19,-12.25,-26.6],3:[9.54,6.83,2.52,7.07,0.49,-9.97,-12.88,-14.84,-12.2,-15.25],4:[10.43,5.77,9.93,7.5,6.69,-2.86,-18.36,-15.47,-18.75,-19.17],5:[7.7,1.22,3.59,6.28,11.04,2.46,-5.35,-9.49,-18.85,-20.44],6:[5.77,1.59,1.11,8.19,12.12,11.04,-1.77,-8.68,-16.26,-24.57],7:[15.85,7.37,10.66,6.2,11.6,11.8,8.65,-5.34,-19.48,-25.75],8:[23.42,10.29,1.91,5.26,7.29,7.76,6.03,7.34,-7.98,-23.92],9:[18.16,18.45,11.56,-0.22,5.06,-5.32,1.79,.5,8.46,-13.01],10:[2.89,-19.14,-15.7,-11.99,-15.22,-12.2,-12.85,-10.71,-7.1,8.58]}},'Women':{'differences':{1:[9.71,7.61,5.81,-1.67,-17.44,-19.83,-10.21,-22.35,-14.18,-10.93],2:[8.27,6.33,8.68,6.4,-2.12,-18.02,-20.63,-31.13,-14.8,-23.85],3:[7.94,6.68,4.58,5.69,2.83,-16.45,-18,-10.98,-5.21,-17.68],4:[10.5,9.21,10.54,7.6,4.78,-4.06,-22.23,-20.46,-22.9,-4.65],5:[14.17,8.42,-1.73,2.95,14.49,2.23,-7.36,-9.63,-27.24,-24.27],6:[15.42,-2.97,3.56,16.96,9,16.28,-4.59,-11.04,-25.77,-25.86],7:[16.04,17.69,5.03,3.79,8.8,7.41,8.11,-5.09,-19.68,-19.62],8:[5.61,11.76,3.81,11.03,12.35,-11.71,1.42,1.89,4.15,-19.79],9:[18,33.02,1.9,-2.94,-7.3,7.9,-15.69,-12.19,11.6,-2.95],10:[-26.82,-42.92,-46.96,-34.2,-33.78,-30.59,-18.31,-.87,-5.68,37.1]}},'Men':{'differences':{1:[7.74,15.7,10.43,-5.91,-9.09,-2.36,-31.98,-25.15,-10.4,-21.43],2:[13.91,9.91,2.04,11.68,-3.47,-14.83,-15.57,-13.92,-17.82,-36.65],3:[11.95,7.28,.11,13.25,-1.79,.88,-5.78,-21.86,-22.61,-19.28],4:[10.79,1.49,9.18,7.95,10.67,-1.06,-13.58,-10.4,-16.27,-29.17],5:[.21,-5.26,8.97,9.48,7.67,2.37,-3.49,-9.05,-11.66,-16.94],6:[-2.73,4.96,-.5,2.54,14.75,6.83,-.07,-7.29,-8.63,-22.19],7:[10.91,-1.22,13,8.15,14.18,15.12,8.73,-6.26,-19.76,-25.6],8:[23.66,5.19,-.034,3.49,7.21,17.57,8.1,9.32,-12.98,-23.37],9:[3.03,5.93,9.9,-1.62,8.11,-9.73,7.48,4.65,7.43,-12.9],10:[.37,-21.31,-11.31,-12.32,-15.91,-11.92,-15.9,-13.85,-7.27,8.5]}},'High School':{'differences':{1:[2.9,4.24,3.26,-2.44,-17.81,-13.44,-18.29,3.53,44.79,18.02],2:[8.63,.47,.67,5.13,-3.21,-23.03,-1.5,-29.03,4.37,-26.15],3:[2.47,-1.73,.2,3.72,1.89,1.42,-3.12,-12.07,-21.28,-19.17],4:[1.57,.47,7.81,4.58,.53,-.83,-17.79,-11.84,-5.06,-25.15],5:[.79,7.81,-.45,5.88,8.22,-5.13,-8.36,-10.66,-14.02,-13.36],6:[-6.62,2.63,-.9,9.22,7.56,7.88,-5.31,-8.74,-20.61,-19.32],7:[19.4,3.2,8.26,15.35,8.6,10.47,1.12,-16.11,-23.1,-27.67],8:[3.61,3.75,-4.82,22.18,14.67,17.1,5.91,-3.79,-21.6,-21.04],9:[14.66,6.1,16.24,7.22,21.22,-2.5,12.13,6.79,-5.47,-30.22],10:[4.69,-11.24,-18.34,-10.56,12.4,-.1,-4.84,4.01,.09,1.88]}},'Some College':{'differences':{1:[12.53,9.56,-.25,-3.8,-15.07,-14.14,-10.9,-15.59,-5.92,17.36],2:[6.89,5.68,6.17,3.27,-6.34,-12.01,-19.27,-7.08,4.7,-10.3],3:[9.53,18.53,2,7.54,-1.82,-17.81,-15.08,-15.06,-5.51,1.11],4:[9.94,1.31,6.79,7.72,12.69,-3.43,-14.77,-17.25,-24.36,-10.87],5:[9,-10.54,9.7,3.82,10.92,2.45,-5.02,-12.22,-10.34,-14.76],6:[2.34,-11.74,3.03,7.29,11.74,6.04,-.93,-8.26,-8.51,-15.91],7:[5.55,15.23,15.51,-1.53,14.53,14.09,2.8,-7.41,-18.16,-22.03],8:[34.34,25.32,-6.52,-5.93,4.31,7.64,10.2,11.82,-14.09,-28.45],9:[29.47,12.02,13.61,-7.07,-.1,-8.08,4.21,6.22,6.26,-18.41],10:[-.68,-12.35,-21.91,8.7,-21.15,-10.91,-1.43,-3.21,8.55,1.27]}},'Finished College':{'differences':{1:[27.19,16.00,35.52,-6.47,-13.4,-15.47,-9.26,-28.16,-16.88,-14.22],2:[11.04,45.8,28.38,18.04,7.93,-11.18,-21.87,-25.85,-20.21,-25.62],3:[30.82,18.11,18.71,19.63,2.94,-13.47,-16.38,-14.21,-11.07,-14.68],4:[35.16,33.07,18.11,31.22,15.72,-5.13,-20.72,-17.07,-16.02,-20.35],5:[24.55,-.61,4.54,10.44,20.53,25.97,4.14,-5.66,-27.99,-24.6],6:[40.68,14.6,-.98,6.51,31.9,29.7,7.78,-8.26,-19.59,-33.15],7:[35.94,3.51,8.64,2.28,14.73,17.85,34.35,8.15,-20.82,-30.99],8:[40.72,12.71,30.35,1.32,8.44,-1.49,7.89,18.62,2.33,-28.98],9:[17.19,53.59,17.43,3.42,1.68,-.71,6.32,-5.81,17.83,-12.39],10:[34.36,-10.28,16.33,-9.23,-6.88,-8.79,-10.34,-10.53,-12.71,4.47]}}}
 
 var mobile2 = Snap('#income_graph2')
 var pos_colors=['#b7dfd1','#67c2a5','#33836A','#205946']
 var neg_colors=['#fbcdbb','#f58c63','#c63F26','#8e2A1d']
 var width2=950
 var left_margin2=0
-var type='All'
+var type2='All'
 var selectbin2
 var svgel2=document.getElementById('income_graph2')
 var pt2=svgel2.createSVGPoint()
@@ -62,14 +62,14 @@ if(window.outerWidth>800){
 
 // issue commands
 draw_base2()
-draw_graph2(data[type]['differences'])
+draw_graph2(data2[type2]['differences'])
 mobile2.mousemove(show_value2)
 start_slides2(1)
 
 function clear_slides2(cover,callback,immediate){
-	nub1.unclick(start_slides2)
-	nub2.unclick(advance2_2)
-	nub3.unclick(final_click2)
+	twonub1.unclick(start_slides2)
+	twonub2.unclick(advance2_2)
+	twonub3.unclick(final_click2)
 
 	try{mobile2.selectAll('[cover]').remove()}catch(err){}
 
@@ -103,20 +103,20 @@ function start_slides2(immediate){
 	if(immediate==undefined){immediate=0}
 
 	// nub stuff
-	nub1.attr({'fill-opacity':1,fill:'#b7dfd1'})
-	nub2.attr({'fill-opacity':.4,fill:'white'})
-	nub3.attr({'fill-opacity':.4,fill:'white'})
+	twonub1.attr({'fill-opacity':1,fill:'#b7dfd1'})
+	twonub2.attr({'fill-opacity':.4,fill:'white'})
+	twonub3.attr({'fill-opacity':.4,fill:'white'})
 
 	clear_slides2(1,function(){
-		nub2.click(advance2_2)
-		nub3.click(final_click2)
+		twonub2.click(advance2_2)
+		twonub3.click(final_click2)
 
 		// cover stuff
 		var cover=mobile2.rect(0,0,1045,700*wide).attr({'pointer-events':'visibleFill',fill:'none','cover':'none',cursor:'pointer'})
 		cover.click(advance2_2)
-		mobile2.append(nub1)
-		mobile2.append(nub2)
-		mobile2.append(nub3)
+		mobile2.append(twonub1)
+		mobile2.append(twonub2)
+		mobile2.append(twonub3)
 
 		// slide 1 text
 		var i2slide1_1=mobile2.text(522.5,345*wide,["The colors on this graph show whether workers are more or less","likely to move up and down the income distribution in recent years."]).attr({'font-family':'Lato','font-size':30,'text-anchor':'middle',firstslide:'none','pointer-events':'none'})
@@ -126,21 +126,21 @@ function start_slides2(immediate){
 
 function advance2_2(){
 	// nub stuff
-	nub2.attr({'fill-opacity':1,fill:'#b7dfd1'})
-	nub1.attr({'fill-opacity':.4,fill:'white'})
-	nub3.attr({'fill-opacity':.4,fill:'white'})
+	twonub2.attr({'fill-opacity':1,fill:'#b7dfd1'})
+	twonub1.attr({'fill-opacity':.4,fill:'white'})
+	twonub3.attr({'fill-opacity':.4,fill:'white'})
 
 	// get rid of firstslide
 	clear_slides2(1,function(){
-		nub1.click(start_slides2)
-		nub3.click(final_click2)
+		twonub1.click(start_slides2)
+		twonub3.click(final_click2)
 
 		// cover stuff
 		var cover=mobile2.rect(0,0,1045,700*wide).attr({'pointer-events':'visibleFill',fill:'none','cover':'none',cursor:'pointer'})
 		cover.click(final_click2)
-		mobile2.append(nub1)
-		mobile2.append(nub2)
-		mobile2.append(nub3)
+		mobile2.append(twonub1)
+		mobile2.append(twonub2)
+		mobile2.append(twonub3)
 
 		// animate new text
 		mobile2.rect(424,118+(wide-1)*200,29,28).attr({fill:'black',secondslide:'none','pointer-events':'none'})
@@ -182,16 +182,16 @@ function advance2_2(){
 
 function final_click2(){
 	clear_slides2(0,function(){
-		nub1.click(start_slides2)
-		nub2.click(advance2_2)
+		twonub1.click(start_slides2)
+		twonub2.click(advance2_2)
 	})
 
 	mobile2.selectAll('[graphfade]').animate({opacity:0},400)
 
 	// nub stuff
-	nub1.attr({'fill-opacity':.4,fill:'white'})
-	nub2.attr({'fill-opacity':.4,fill:'white'})
-	nub3.attr({'fill-opacity':1,fill:'#b7dfd1'})
+	twonub1.attr({'fill-opacity':.4,fill:'white'})
+	twonub2.attr({'fill-opacity':.4,fill:'white'})
+	twonub3.attr({'fill-opacity':1,fill:'#b7dfd1'})
 
 	setTimeout(function(){
 		mobile2.selectAll('rect[starting][ending]').forEach(function(step,i){
@@ -238,7 +238,7 @@ function draw_base2(){
 	// grid lines
 	var percents=[10,20,30,40,50,60,70,80,90]
 	for (var i=0;i<percents.length;i++){
-		var size=size_rect(0)*percents[i]/10
+		var size=size_rect2(0)*percents[i]/10
 		mobile2.line(left_margin2,wide*(335-size),left_margin2+width2,wide*(335-size)).attr({stroke:'#eee','stroke-width2':1,'shape-rendering':'crispEdges'})
 		if(i!=10){mobile2.line(left_margin2,wide*(365+size),left_margin2+width2,wide*(365+size)).attr({stroke:'#eee','stroke-width2':1,'shape-rendering':'crispEdges'})}
 		// mobile2.text(left_margin2+width2+4,-(wide-1)*4+wide*(4+335-size),percents[i]+'%').attr({'font-family':'Lato',fill:'#aaa','font-size':13})
@@ -283,22 +283,22 @@ function draw_base2(){
 	var holder=mobile2.rect(5,wide*42,80,50).attr({cursor:'pointer','pointer-events':'visibleFill',fill:'#e2f2ed',stroke:'#67c2a5','shape-rendering':'crispEdges','stroke-width2':1,'graphfade':'none'})
 	var pointer=mobile2.path('M13.1244203,0 L13.1244203,4 L14.1244203,4 L14.1244203,0 L13.1244203,0 L13.1244203,0 Z M19.5269278,2.57686389 L16.418344,5.09414546 L17.0476644,5.87129142 L20.1562482,3.35400985 L19.5269278,2.57686389 L19.5269278,2.57686389 Z M21.5318564,9.3124234 L17.6343761,8.41261918 L17.4094251,9.38698925 L21.3069053,10.2867935 L21.5318564,9.3124234 L21.5318564,9.3124234 Z M5.94193535,10.2867935 L9.83941561,9.38698925 L9.61446455,8.41261918 L5.71698429,9.3124234 L5.94193535,10.2867935 L5.94193535,10.2867935 Z M7.09259245,3.35400985 L10.2011763,5.87129142 L10.8304967,5.09414546 L7.72191284,2.57686389 L7.09259245,3.35400985 L7.09259245,3.35400985 Z M19.6231595,30.9999999 C23.7659915,31 27.1244203,27.4147752 27.1244203,23.5 C27.1244203,23.5 27.1244203,25.8132437 27.1244203,23.5 L27.1244203,19.7491622 L27.1244203,17.5016756 C27.1244203,16.6723231 26.4586231,16 25.6244203,16 C24.7959932,16 24.1244203,16.6711894 24.1244203,17.5016756 L24.1244203,18 L23.1244203,18 L23.1244203,15.5064385 C23.1244203,14.6744555 22.4586231,14 21.6244203,14 C20.7959932,14 20.1244203,14.6715406 20.1244203,15.5064385 L20.1244203,17 L19.1244203,17 L19.1244203,14.5064385 C19.1244203,13.6744555 18.4586231,13 17.6244203,13 C16.7959932,13 16.1244203,13.6715406 16.1244203,14.5064385 L16.1244203,18 L15.1244203,18 L15.1244203,7.50524116 C15.1244203,6.67391942 14.4586231,6 13.6244203,6 C12.7959932,6 12.1244203,6.66712976 12.1244203,7.50524116 L12.1244203,18.7999878 C10.0660207,16.599567 7.35605012,14.1791206 6.24545305,15.2957153 C5.15828327,16.3887562 7.95978233,19.4007216 11.8717958,25.9830936 C13.6344162,28.9488875 15.8647052,30.9995418 19.6231595,30.9999999 L19.6231595,30.9999999 Z M28.1244203,23.5 C28.1244203,28.1944206 24.3188409,32 19.6244203,32.0000003 C16.5115051,32.0000003 13.2262274,30.5474856 10.9652407,26.4282229 C7.70175208,20.4825159 3.52827319,16.5832077 5.51553361,14.5959473 C6.9371827,13.1742982 9.16926196,14.5381668 11.1244203,16.3667868 L11.1244203,16.3667868 L11.1244203,7.50840855 C11.1244203,6.11541748 12.2437085,5 13.6244203,5 C15.0147583,5 16.1244203,6.12305276 16.1244203,7.50840855 L16.1244203,12.4983653 C16.5422506,12.1853054 17.0616174,12 17.6244203,12 C18.7069384,12 19.6193054,12.6774672 19.9702378,13.6281239 C20.4110134,13.2379894 20.9901312,13 21.6244203,13 C23.0147583,13 24.1244203,14.1182256 24.1244203,15.4976267 L24.1244203,15.5110883 C24.5422506,15.1985158 25.0616174,15.014191 25.6244203,15.014191 C27.0147583,15.014191 28.1244203,16.1335355 28.1244203,17.5143168 L28.1244203,23.5 L28.1244203,23.5 Z').attr({cursor:'pointer','graphfade':'none'})
 	pointer.transform('t48,'+(wide*52-(wide-1)*12))
-	nub1=mobile2.circle(18,wide*69-(wide-1)*29,4,4).attr({fill:'#B7dfd1',stroke:'#67c2a5',cursor:'pointer','nub':'none'})
-	nub2=mobile2.circle(29,wide*69-(wide-1)*29,4,4).attr({fill:'white',stroke:'#67c2a5','fill-opacity':.4,cursor:'pointer','nub':'none'})
-	nub3=mobile2.circle(40,wide*69-(wide-1)*29,4,4).attr({fill:'white',stroke:'#67c2a5','fill-opacity':.4,cursor:'pointer','nub':'none'})
+	twonub1=mobile2.circle(18,wide*69-(wide-1)*29,4,4).attr({fill:'#B7dfd1',stroke:'#67c2a5',cursor:'pointer','nub':'none'})
+	twonub2=mobile2.circle(29,wide*69-(wide-1)*29,4,4).attr({fill:'white',stroke:'#67c2a5','fill-opacity':.4,cursor:'pointer','nub':'none'})
+	twonub3=mobile2.circle(40,wide*69-(wide-1)*29,4,4).attr({fill:'white',stroke:'#67c2a5','fill-opacity':.4,cursor:'pointer','nub':'none'})
 
-	nub1.click(start_slides2)
-	nub2.click(advance2_2)
-	nub3.click(final_click2)
+	twonub1.click(start_slides2)
+	twonub2.click(advance2_2)
+	twonub3.click(final_click2)
 
 	var guideline = mobile2.line(width2-1,wide*110,width2-1,wide*590).attr({'guideline':'none','stroke-width2':1,'stroke':'#ccc','shape-rendering':'crispEdges','marker-end':amarker,'marker-start':amarker2})
 }
 
 function switch_graph2(){
-	var e = document.getElementById("demo_select")
+	var e = document.getElementById("demo_select2")
 	var newtype = e.options[e.selectedIndex].value
-	type=newtype
-	var matrix=data[type]['differences']
+	type2=newtype
+	var matrix=data2[type2]['differences']
 	reduce_block(selectbin2,function(){
 		for(var i=1;i<11;i++){
 			// redo below-the-base boxes
@@ -338,7 +338,7 @@ function draw_graph2(matrix){
 			// j is the ending percentile bucket (starts at 0 because this is just an indexed array)
 			// draw all rectangles starting at bottom and working up
 			// then shift all rectangle up so that the i-1 rectangle is centered around 350
-			var size=size_rect(matrix[i][j])*wide
+			var size=size_rect2(matrix[i][j])*wide
 
 			// get appropriate fill
 			if(i==j+1){
@@ -405,7 +405,7 @@ function show_value2(ev){
 
 	} else if(ev.target.tagName=='rect'){
 		var value=parseFloat(temp.attr('value')).toFixed(1)
-		if(value<0){var type='decline '}else{var type='increase '}
+		if(value<0){var typer='decline '}else{var typer='increase '}
 		var color=choose_color(value)
 		var change=parseInt(temp.attr('ending'))-parseInt(temp.attr('starting'))
 		if(change>0){var ttext='rising'}else{var ttext='falling'}
@@ -420,7 +420,7 @@ function show_value2(ev){
 
 		mobile2.rect(x+20,y-32,160,57).attr({'pointer-events':'none',fill:'white',stroke:'black','stroke-width2':1,'shape-rendering':'crispEdges','hovervalue':'none'})
 		mobile2.text(x+100,y-10,Math.abs(value)+'%').attr({'pointer-events':'none','hovervalue':'none','font-family':'Lato','font-weight':700,'font-size':'18px','text-anchor':'middle',fill:color})
-		mobile2.text(x+100,y+4,type+'in the probability').attr({'pointer-events':'none','hovervalue':'none','font-family':'Lato','font-size':'13px','text-anchor':'middle'})
+		mobile2.text(x+100,y+4,typer+'in the probability').attr({'pointer-events':'none','hovervalue':'none','font-family':'Lato','font-size':'13px','text-anchor':'middle'})
 		if(change!==0){
 			mobile2.text(x+100,y+16,'of '+ttext+' '+Math.abs(change)+' income '+dec).attr({'pointer-events':'none','hovervalue':'none','font-family':'Lato','font-size':'13px','text-anchor':'middle'})
 		} else {
@@ -430,63 +430,63 @@ function show_value2(ev){
 }
 
 
-function size_rect(value){
+function size_rect2(value){
 	return 22
 }
 
-function expand_block(ev){
-	var temp=Snap(ev.target)
-	var bin=temp.attr('starting')
-	if(bin!=selectbin2){
-		reduce_block(selectbin2)
-		selectbin2=bin
+// function expand_block(ev){
+// 	var temp=Snap(ev.target)
+// 	var bin=temp.attr('starting')
+// 	if(bin!=selectbin2){
+// 		reduce_block(selectbin2)
+// 		selectbin2=bin
 
-		// manipulate blocks
-		mobile2.selectAll("[starting='"+bin+"'][ending]").forEach(function(step,i){
-			if(parseInt(step.attr('starting'))!=parseInt(step.attr('ending'))){
-				step.animate({opacity:1},400)
-				if(parseInt(step.attr('starting'))<parseInt(step.attr('ending'))){
-					var step_pos=step.attr('ending')-step.attr('starting')
-					step.animate({y:parseFloat(step.attr('basey'))-5*step_pos},200,mina.easeinout,function(){step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout)})
-				} else if(parseInt(step.attr('starting'))>parseInt(step.attr('ending'))){
-					var step_pos=step.attr('starting')-step.attr('ending')
-					step.animate({y:parseFloat(step.attr('basey'))+5*step_pos},200,mina.easeinout,function(){step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout)})
-				}
-			}
-		})
-	}
-}
+// 		// manipulate blocks
+// 		mobile2.selectAll("[starting='"+bin+"'][ending]").forEach(function(step,i){
+// 			if(parseInt(step.attr('starting'))!=parseInt(step.attr('ending'))){
+// 				step.animate({opacity:1},400)
+// 				if(parseInt(step.attr('starting'))<parseInt(step.attr('ending'))){
+// 					var step_pos=step.attr('ending')-step.attr('starting')
+// 					step.animate({y:parseFloat(step.attr('basey'))-5*step_pos},200,mina.easeinout,function(){step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout)})
+// 				} else if(parseInt(step.attr('starting'))>parseInt(step.attr('ending'))){
+// 					var step_pos=step.attr('starting')-step.attr('ending')
+// 					step.animate({y:parseFloat(step.attr('basey'))+5*step_pos},200,mina.easeinout,function(){step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout)})
+// 				}
+// 			}
+// 		})
+// 	}
+// }
 
-function reduce_block(bin,callback){
-	if(selectbin2==bin){
-		mobile2.selectAll("[starting='"+bin+"'][ending]").forEach(function(step,i){
-			if(parseInt(step.attr('starting'))!=parseInt(step.attr('ending'))){
-				step.stop()
-				step.animate({opacity:.7},300)
-				if(parseInt(step.attr('starting'))<parseInt(step.attr('ending'))){
-					step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout)
-				} else if(parseInt(step.attr('starting'))>parseInt(step.attr('ending'))){
-					step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout)
-				}
-			}
-		})
+// function reduce_block(bin,callback){
+// 	if(selectbin2==bin){
+// 		mobile2.selectAll("[starting='"+bin+"'][ending]").forEach(function(step,i){
+// 			if(parseInt(step.attr('starting'))!=parseInt(step.attr('ending'))){
+// 				step.stop()
+// 				step.animate({opacity:.7},300)
+// 				if(parseInt(step.attr('starting'))<parseInt(step.attr('ending'))){
+// 					step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout)
+// 				} else if(parseInt(step.attr('starting'))>parseInt(step.attr('ending'))){
+// 					step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout)
+// 				}
+// 			}
+// 		})
 
-		mobile2.selectAll("[starting='"+bin+"'][texttype]").forEach(function(word,i){
-			word.stop()
-			word.animate({opacity:0},100,function(){word.remove()})
-		})
-		mobile2.selectAll("[starting='"+bin+"'][texttype]").animate({opacity:0},100)
-		mobile2.selectAll("[starting='"+bin+"'][type='temprect']").forEach(function(rect,i){
-			// rect.stop()
-			rect.animate({opacity:0},100,function(){rect.remove()})
-		})
-	}
+// 		mobile2.selectAll("[starting='"+bin+"'][texttype]").forEach(function(word,i){
+// 			word.stop()
+// 			word.animate({opacity:0},100,function(){word.remove()})
+// 		})
+// 		mobile2.selectAll("[starting='"+bin+"'][texttype]").animate({opacity:0},100)
+// 		mobile2.selectAll("[starting='"+bin+"'][type='temprect']").forEach(function(rect,i){
+// 			// rect.stop()
+// 			rect.animate({opacity:0},100,function(){rect.remove()})
+// 		})
+// 	}
 
-	if(callback){
-		selectbin2=undefined
-		callback()
-	}
-}
+// 	if(callback){
+// 		selectbin2=undefined
+// 		callback()
+// 	}
+// }
 
 
 

@@ -559,6 +559,8 @@ function expand_block(ev){
 		// toptext
 		var percentchance=0
 		for(var i=bin;i<10;i++){
+			console.log(type,bin,i)
+			console.log(data['All'][type][bin][i])
 			percentchance=percentchance+data['All'][type][bin][i]
 		}
 
