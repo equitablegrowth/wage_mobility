@@ -299,7 +299,7 @@ function switch_graph2(){
 	var newtype = e.options[e.selectedIndex].value
 	type2=newtype
 	var matrix=data2[type2]['differences']
-	reduce_block(selectbin2,function(){
+	reduce_block2(selectbin2,function(){
 		for(var i=1;i<11;i++){
 			// redo below-the-base boxes
 			var below_start=365*wide
@@ -358,7 +358,7 @@ function draw_graph2(matrix){
 			if(j!=0){rect_top=rect_top-size}
 
 			var base_bin=mobile2.rect(left_margin2+bin_width2*(i-1)+gap*(i-1),rect_top,bin_width2,size).attr({stroke:stroke,'stroke-width2':1,value:matrix[i][j],basex:left_margin2+bin_width2*(i-1)+gap*(i-1),fill:fill,'shape-rendering':'crispEdges',starting:i,ending:j+1,opacity:opacity})
-			base_bin.hover(expand_block)
+			base_bin.hover(expand_block2)
 			if(i==j+1){
 				var text_overlay=mobile2.text(bin_width2/2+left_margin2+bin_width2*(i-1)+gap*(i-1),rect_top+34*wide,matrix[i][j].toFixed()+'%').attr({'pointer-events':'none',fill:'white',starting:i,ending:j+1,'font-family':'Lato','text-anchor':'middle','font-size':14*wide})
 			}
@@ -434,59 +434,59 @@ function size_rect2(value){
 	return 22
 }
 
-// function expand_block(ev){
-// 	var temp=Snap(ev.target)
-// 	var bin=temp.attr('starting')
-// 	if(bin!=selectbin2){
-// 		reduce_block(selectbin2)
-// 		selectbin2=bin
+function expand_block2(ev){
+	var temp=Snap(ev.target)
+	var bin=temp.attr('starting')
+	if(bin!=selectbin2){
+		reduce_block2(selectbin2)
+		selectbin2=bin
 
-// 		// manipulate blocks
-// 		mobile2.selectAll("[starting='"+bin+"'][ending]").forEach(function(step,i){
-// 			if(parseInt(step.attr('starting'))!=parseInt(step.attr('ending'))){
-// 				step.animate({opacity:1},400)
-// 				if(parseInt(step.attr('starting'))<parseInt(step.attr('ending'))){
-// 					var step_pos=step.attr('ending')-step.attr('starting')
-// 					step.animate({y:parseFloat(step.attr('basey'))-5*step_pos},200,mina.easeinout,function(){step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout)})
-// 				} else if(parseInt(step.attr('starting'))>parseInt(step.attr('ending'))){
-// 					var step_pos=step.attr('starting')-step.attr('ending')
-// 					step.animate({y:parseFloat(step.attr('basey'))+5*step_pos},200,mina.easeinout,function(){step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout)})
-// 				}
-// 			}
-// 		})
-// 	}
-// }
+		// manipulate blocks
+		mobile2.selectAll("[starting='"+bin+"'][ending]").forEach(function(step,i){
+			if(parseInt(step.attr('starting'))!=parseInt(step.attr('ending'))){
+				step.animate({opacity:1},400)
+				if(parseInt(step.attr('starting'))<parseInt(step.attr('ending'))){
+					var step_pos=step.attr('ending')-step.attr('starting')
+					step.animate({y:parseFloat(step.attr('basey'))-5*step_pos},200,mina.easeinout,function(){step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout)})
+				} else if(parseInt(step.attr('starting'))>parseInt(step.attr('ending'))){
+					var step_pos=step.attr('starting')-step.attr('ending')
+					step.animate({y:parseFloat(step.attr('basey'))+5*step_pos},200,mina.easeinout,function(){step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout)})
+				}
+			}
+		})
+	}
+}
 
-// function reduce_block(bin,callback){
-// 	if(selectbin2==bin){
-// 		mobile2.selectAll("[starting='"+bin+"'][ending]").forEach(function(step,i){
-// 			if(parseInt(step.attr('starting'))!=parseInt(step.attr('ending'))){
-// 				step.stop()
-// 				step.animate({opacity:.7},300)
-// 				if(parseInt(step.attr('starting'))<parseInt(step.attr('ending'))){
-// 					step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout)
-// 				} else if(parseInt(step.attr('starting'))>parseInt(step.attr('ending'))){
-// 					step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout)
-// 				}
-// 			}
-// 		})
+function reduce_block2(bin,callback){
+	if(selectbin2==bin){
+		mobile2.selectAll("[starting='"+bin+"'][ending]").forEach(function(step,i){
+			if(parseInt(step.attr('starting'))!=parseInt(step.attr('ending'))){
+				step.stop()
+				step.animate({opacity:.7},300)
+				if(parseInt(step.attr('starting'))<parseInt(step.attr('ending'))){
+					step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout)
+				} else if(parseInt(step.attr('starting'))>parseInt(step.attr('ending'))){
+					step.animate({y:parseFloat(step.attr('basey'))},200,mina.easeinout)
+				}
+			}
+		})
 
-// 		mobile2.selectAll("[starting='"+bin+"'][texttype]").forEach(function(word,i){
-// 			word.stop()
-// 			word.animate({opacity:0},100,function(){word.remove()})
-// 		})
-// 		mobile2.selectAll("[starting='"+bin+"'][texttype]").animate({opacity:0},100)
-// 		mobile2.selectAll("[starting='"+bin+"'][type='temprect']").forEach(function(rect,i){
-// 			// rect.stop()
-// 			rect.animate({opacity:0},100,function(){rect.remove()})
-// 		})
-// 	}
+		mobile2.selectAll("[starting='"+bin+"'][texttype]").forEach(function(word,i){
+			word.stop()
+			word.animate({opacity:0},100,function(){word.remove()})
+		})
+		mobile2.selectAll("[starting='"+bin+"'][texttype]").animate({opacity:0},100)
+		mobile2.selectAll("[starting='"+bin+"'][type='temprect']").forEach(function(rect,i){
+			// rect.stop()
+			rect.animate({opacity:0},100,function(){rect.remove()})
+		})
+	}
 
-// 	if(callback){
-// 		selectbin2=undefined
-// 		callback()
-// 	}
-// }
+	if(callback){
+		selectbin2=undefined
+		callback()
+	}
+}
 
 
 
