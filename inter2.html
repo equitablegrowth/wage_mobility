@@ -18,7 +18,7 @@
 	
 	<div class='subconstraint'>
 		<div class='hed'>Upward mobility has become less common in the U.S. economy</div>
-		<div class='dek'>The most well-off workers have less chance of falling down the income ladder in recent years. Use the menu to switch between different kinds of workers.</div>
+		<div class='dek'>The most well-off workers have less chance of falling down the earnings ladder in recent years. Use the menu to switch between different kinds of workers.</div>
 		<div class='styled-select'>
 			<span class='select_carat'>
 				<select name="select" onchange='switch_graph2()' id='demo_select2'>
@@ -119,7 +119,7 @@ function start_slides2(immediate){
 		mobile2.append(twonub3)
 
 		// slide 1 text
-		var i2slide1_1=mobile2.text(522.5,345*wide,["The colors on this graph show whether workers are more or less","likely to move up and down the income distribution in recent years."]).attr({'font-family':'Lato','font-size':30,'text-anchor':'middle',firstslide:'none','pointer-events':'none'})
+		var i2slide1_1=mobile2.text(522.5,345*wide,["The colors on this graph show whether workers are more or less","likely to move up and down the earnings distribution in recent years."]).attr({'font-family':'Lato','font-size':30,'text-anchor':'middle',firstslide:'none','pointer-events':'none'})
 		i2slide1_1.selectAll("tspan:not(:first-child)").attr({x:i2slide1_1.attr('x'),dy:30})
 	},immediate)
 }
@@ -143,29 +143,29 @@ function advance2_2(){
 		mobile2.append(twonub3)
 
 		// animate new text
-		mobile2.rect(424,118+(wide-1)*200,29,28).attr({fill:'black',secondslide:'none','pointer-events':'none'})
-		var slide2_1=mobile2.text(950,140*wide+(wide-1)*60,["1 "," Orange blocks, seen mostly above workers' starting","income bucket, indicate that workers are less likely to","move up the income ladder in recent years."]).attr({opacity:0,'font-family':'Lato','font-size':22,'text-anchor':'end',cursor:'pointer',secondslide:'none','pointer-events':'none'})
+		mobile2.rect(424-(wide-1)*9,118+(wide-1)*200,29,28).attr({fill:'black',secondslide:'none','pointer-events':'none'})
+		var slide2_1=mobile2.text(950,140*wide+(wide-1)*60,["1 ","\u00A0Orange blocks, seen mostly above workers' starting","earnings bracket, indicate that workers are less likely to","move up the earnings ladder in recent years."]).attr({opacity:0,'font-family':'Lato','font-size':22,'text-anchor':'end',cursor:'pointer',secondslide:'none','pointer-events':'none'})
 		slide2_1.selectAll("tspan:nth-child(3)").attr({x:slide2_1.attr('x'),dy:25})
 		slide2_1.selectAll("tspan:nth-child(4)").attr({x:slide2_1.attr('x'),dy:25})
 		slide2_1.selectAll("tspan:nth-child(1)").attr({fill:'white'})
 		slide2_1.animate({opacity:1},800)
-		slide2_1.node.setAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:space", "preserve")
+		// slide2_1.node.setAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:space", "preserve")
 
 		mobile2.rect(42,518+(wide-1)*600,29,28).attr({fill:'black',secondslide:'none','pointer-events':'none'})
-		var slide2_2=mobile2.text(50,540*wide+(wide-1)*60,["2  ","Green blocks, seen mostly below workers' starting","income bucket, indicate that workers are more likely to","fall down the income ladder in recent years."]).attr({opacity:0,'font-family':'Lato','font-size':22,'text-anchor':'start',cursor:'pointer',secondslide:'none','pointer-events':'none'})
+		var slide2_2=mobile2.text(50,540*wide+(wide-1)*60,["2  "," \u00A0Green blocks, seen mostly below workers' starting","earnings bracket, indicate that workers are more likely to","fall down the earnings ladder in recent years."]).attr({opacity:0,'font-family':'Lato','font-size':22,'text-anchor':'start',cursor:'pointer',secondslide:'none','pointer-events':'none'})
 		slide2_2.selectAll("tspan:nth-child(3)").attr({x:slide2_2.attr('x'),dy:25})
 		slide2_2.selectAll("tspan:nth-child(4)").attr({x:slide2_2.attr('x'),dy:25})
 		slide2_2.selectAll("tspan:nth-child(1)").attr({fill:'white'})
 		slide2_2.animate({opacity:1},800)
-		slide2_2.node.setAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:space", "preserve")
+		// slide2_2.node.setAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:space", "preserve")
 
-		mobile2.rect(811,564+(wide-1)*570,25,25).attr({fill:'black',secondslide:'none','pointer-events':'none'})
+		mobile2.rect(811-(wide-1)*2,564+(wide-1)*570,25,25).attr({fill:'black',secondslide:'none','pointer-events':'none'})
 		mobile2.rect(855,365*wide,95,197*wide).attr({fill:'none',stroke:'black',secondslide:'none'})
-		var except=mobile2.text(903,583+(wide-1)*570,['3  ','Except for the very','highest earners.']).attr({opacity:0,'font-family':'Lato','font-size':18,'text-anchor':'middle',cursor:'pointer',secondslide:'none','pointer-events':'none'})
+		var except=mobile2.text(903,583+(wide-1)*570,['3  ',' \u00A0Except for the very','highest earners.']).attr({opacity:0,'font-family':'Lato','font-size':18,'text-anchor':'middle',cursor:'pointer',secondslide:'none','pointer-events':'none'})
 		except.selectAll("tspan:nth-child(3)").attr({x:except.attr('x'),dy:20})
 		except.selectAll("tspan:nth-child(1)").attr({fill:'white'})
 		except.animate({opacity:1},800)
-		except.node.setAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:space", "preserve")
+		// except.node.setAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:space", "preserve")
 
 		mobile2.selectAll('rect[starting="1"][ending="1"]').animate({opacity:1},800)
 		mobile2.selectAll('rect[starting="2"][ending="2"]').animate({opacity:1},800)
@@ -213,7 +213,7 @@ function final_click2(){
 	mobile2.selectAll('rect[starting="8"][ending="8"]').animate({opacity:1},800)
 	mobile2.selectAll('rect[starting="9"][ending="9"]').animate({opacity:1},800)
 	mobile2.selectAll('rect[starting="10"][ending="10"]').animate({opacity:1},800,function(){
-		var final=mobile2.text(522.5,310*wide+(wide-1)*20,"Try hovering over or touching a bucket").attr({'font-family':'Lato','font-size':30,'text-anchor':'middle',firstslide:'none',opacity:0,'pointer-events':'none'})
+		var final=mobile2.text(522.5,310*wide+(wide-1)*20,"Try hovering over or touching a rectangle").attr({'font-family':'Lato','font-size':30,'text-anchor':'middle',firstslide:'none',opacity:0,'pointer-events':'none'})
 		final.animate({opacity:1},800,function(){
 			setTimeout(function(){
 				final.animate({opacity:0},800)
@@ -232,7 +232,7 @@ function draw_base2(){
 	rich_end.selectAll("tspan:not(:first-child)").attr({x:rich_end.attr('x'),dy:15})
 	var poor_end = mobile2.text(width2+4,568*wide-(wide-1)*-15,['Poorer after','15 years']).attr({'font-family':'Lato','text-anchor':'start','labeltext':'none'})
 	poor_end.selectAll("tspan:not(:first-child)").attr({x:poor_end.attr('x'),dy:15})
-	var stay_same = mobile2.text(width2+4,348*wide,['No change','in income']).attr({'font-family':'Lato','text-anchor':'start','labeltext':'none'})
+	var stay_same = mobile2.text(width2+4,348*wide,['No change','in earnings']).attr({'font-family':'Lato','text-anchor':'start','labeltext':'none'})
 	stay_same.selectAll("tspan:not(:first-child)").attr({x:parseFloat(stay_same.attr('x')),dy:15})
 
 	// grid lines
@@ -422,9 +422,9 @@ function show_value2(ev){
 		mobile2.text(x+100,y-10,Math.abs(value)+'%').attr({'pointer-events':'none','hovervalue':'none','font-family':'Lato','font-weight':700,'font-size':'18px','text-anchor':'middle',fill:color})
 		mobile2.text(x+100,y+4,typer+'in the probability').attr({'pointer-events':'none','hovervalue':'none','font-family':'Lato','font-size':'13px','text-anchor':'middle'})
 		if(change!==0){
-			mobile2.text(x+100,y+16,'of '+ttext+' '+Math.abs(change)+' income '+dec).attr({'pointer-events':'none','hovervalue':'none','font-family':'Lato','font-size':'13px','text-anchor':'middle'})
+			mobile2.text(x+100,y+16,'of '+ttext+' '+Math.abs(change)+' earnings '+dec).attr({'pointer-events':'none','hovervalue':'none','font-family':'Lato','font-size':'13px','text-anchor':'middle'})
 		} else {
-			mobile2.text(x+100,y+16,'of no income change').attr({'pointer-events':'none','hovervalue':'none','font-family':'Lato','font-size':'13px','text-anchor':'middle'})
+			mobile2.text(x+100,y+16,'of no earnings change').attr({'pointer-events':'none','hovervalue':'none','font-family':'Lato','font-size':'13px','text-anchor':'middle'})
 		}
 	}
 }
