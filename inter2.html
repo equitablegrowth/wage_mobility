@@ -3,8 +3,8 @@
 <head>
 	<title>Wage Mobility Interactive</title>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.4.1/snap.svg-min.js"></script>
-	<script src="http://assets.equitablegrowth.org/income_mobility/iframeResizer.contentWindow.min.js"></script>
-	<!-- <link href="css/materialdesignicons.min.css" media="all" rel="stylesheet" type="text/css" /> -->
+	<script src="https://s3.amazonaws.com/assets.equitablegrowth.org/income_mobility/iframeResizer.contentWindow.min.js"></script>
+	<link href="css/materialdesignicons.min.css" media="all" rel="stylesheet" type="text/css" />
 
 	<style>
 		@import url(https://fonts.googleapis.com/css?family=Lato:400,700);
@@ -181,7 +181,7 @@ function advance2_2(){
 		mobile2.append(twonub3)
 
 		// animate new text
-		mobile2.rect(424-(wide-1)*9,118+(wide-1)*200,29,28).attr({fill:'black',secondslide:'none','pointer-events':'none'})
+		mobile2.rect(431-(wide-1)*9,118+(wide-1)*200,27,28).attr({fill:'black',secondslide:'none','pointer-events':'none'})
 		var slide2_1=mobile2.text(950,140*wide+(wide-1)*60,["1 ","\u00A0Orange blocks, seen mostly above workers' starting","earnings bracket, indicate that workers are less likely to","move up the earnings ladder in recent years."]).attr({opacity:0,'font-family':'Lato','font-size':22,'text-anchor':'end',cursor:'pointer',secondslide:'none','pointer-events':'none'})
 		slide2_1.selectAll("tspan:nth-child(3)").attr({x:slide2_1.attr('x'),dy:25})
 		slide2_1.selectAll("tspan:nth-child(4)").attr({x:slide2_1.attr('x'),dy:25})
@@ -189,7 +189,7 @@ function advance2_2(){
 		slide2_1.animate({opacity:1},800) 
 		// slide2_1.node.setAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:space", "preserve")
 
-		mobile2.rect(42,518+(wide-1)*600,29,28).attr({fill:'black',secondslide:'none','pointer-events':'none'})
+		mobile2.rect(43,518+(wide-1)*600,27,28).attr({fill:'black',secondslide:'none','pointer-events':'none'})
 		var slide2_2=mobile2.text(50,540*wide+(wide-1)*60,["2  "," \u00A0Green blocks, seen mostly below workers' starting","earnings bracket, indicate that workers are more likely to","fall down the earnings ladder in recent years."]).attr({opacity:0,'font-family':'Lato','font-size':22,'text-anchor':'start',cursor:'pointer',secondslide:'none','pointer-events':'none'})
 		slide2_2.selectAll("tspan:nth-child(3)").attr({x:slide2_2.attr('x'),dy:25})
 		slide2_2.selectAll("tspan:nth-child(4)").attr({x:slide2_2.attr('x'),dy:25})
@@ -197,7 +197,7 @@ function advance2_2(){
 		slide2_2.animate({opacity:1},800)
 		// slide2_2.node.setAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:space", "preserve")
 
-		mobile2.rect(811-(wide-1)*2,564+(wide-1)*570,25,25).attr({fill:'black',secondslide:'none','pointer-events':'none'})
+		mobile2.rect(814-(wide-1)*2,564+(wide-1)*570,23,25).attr({fill:'black',secondslide:'none','pointer-events':'none'})
 		mobile2.rect(855,365*wide,95,197*wide).attr({fill:'none',stroke:'black',secondslide:'none'})
 		var except=mobile2.text(903,583+(wide-1)*570,['3  ',' \u00A0Except for the very','highest earners.']).attr({opacity:0,'font-family':'Lato','font-size':18,'text-anchor':'middle',cursor:'pointer',secondslide:'none','pointer-events':'none'})
 		except.selectAll("tspan:nth-child(3)").attr({x:except.attr('x'),dy:20})
@@ -457,8 +457,8 @@ function show_value2(ev){
 		if(change==1){var dec='decile'}else{var dec='deciles'}
 
 		mobile2.rect(x+20,y-32,160,57).attr({'pointer-events':'none',fill:'white',stroke:'black','stroke-width2':1,'shape-rendering':'crispEdges','hovervalue':'none'})
-		mobile2.text(x+100,y-10,Math.abs(value)+'%').attr({'pointer-events':'none','hovervalue':'none','font-family':'Lato','font-weight':700,'font-size':'18px','text-anchor':'middle',fill:color})
-		mobile2.text(x+100,y+4,typer+'in the probability').attr({'pointer-events':'none','hovervalue':'none','font-family':'Lato','font-size':'13px','text-anchor':'middle'})
+		mobile2.text(x+100,y-10,value+'%').attr({'pointer-events':'none','hovervalue':'none','font-family':'Lato','font-weight':700,'font-size':'18px','text-anchor':'middle',fill:color})
+		mobile2.text(x+100,y+4,'change in the probability').attr({'pointer-events':'none','hovervalue':'none','font-family':'Lato','font-size':'13px','text-anchor':'middle'})
 		if(change!==0){
 			mobile2.text(x+100,y+16,'of '+ttext+' '+Math.abs(change)+' earnings '+dec).attr({'pointer-events':'none','hovervalue':'none','font-family':'Lato','font-size':'13px','text-anchor':'middle'})
 		} else {
