@@ -181,7 +181,7 @@ function advance2_2(){
 		mobile2.append(twonub3)
 
 		// animate new text
-		mobile2.rect(431-(wide-1)*9,118+(wide-1)*200,27,28).attr({fill:'black',secondslide:'none','pointer-events':'none'})
+		mobile2.rect(431-(wide-1)*0,118+(wide-1)*200,27,28).attr({fill:'black',secondslide:'none','pointer-events':'none'})
 		var slide2_1=mobile2.text(950,140*wide+(wide-1)*60,["1 ","\u00A0Orange blocks, seen mostly above workers' starting","earnings bracket, indicate that workers are less likely to","move up the earnings ladder in recent years."]).attr({opacity:0,'font-family':'Lato','font-size':22,'text-anchor':'end',cursor:'pointer',secondslide:'none','pointer-events':'none'})
 		slide2_1.selectAll("tspan:nth-child(3)").attr({x:slide2_1.attr('x'),dy:25})
 		slide2_1.selectAll("tspan:nth-child(4)").attr({x:slide2_1.attr('x'),dy:25})
@@ -197,7 +197,7 @@ function advance2_2(){
 		slide2_2.animate({opacity:1},800)
 		// slide2_2.node.setAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:space", "preserve")
 
-		mobile2.rect(814-(wide-1)*2,564+(wide-1)*570,23,25).attr({fill:'black',secondslide:'none','pointer-events':'none'})
+		mobile2.rect(814-(wide-1)*0,564+(wide-1)*570,23,25).attr({fill:'black',secondslide:'none','pointer-events':'none'})
 		mobile2.rect(855,365*wide,95,197*wide).attr({fill:'none',stroke:'black',secondslide:'none'})
 		var except=mobile2.text(903,583+(wide-1)*570,['3  ',' \u00A0Except for the very','highest earners.']).attr({opacity:0,'font-family':'Lato','font-size':18,'text-anchor':'middle',cursor:'pointer',secondslide:'none','pointer-events':'none'})
 		except.selectAll("tspan:nth-child(3)").attr({x:except.attr('x'),dy:20})
